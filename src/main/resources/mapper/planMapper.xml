@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.battcn.mapper.PlanMapper">
+    <!-- 回收策略为先进先出 --> <!-- 自动刷新时间60s --><!-- 最多缓存512个引用对象 -->
+    <!-- <cache eviction="FIFO" flushInterval="30000" size="512" readOnly="false" /> --> <!-- 只读 -->
+
+    <!-- <select id="getListByTime" resultType="PlanEntity">
+        SELECT * from api_plan where finishTime &gt; #{startTime} and finishTime &lt; #{endTime} and merchantsId=#{merchantsId} and (state=4 or state=5) order by finishTime asc
+    </select> -->
+   <!--  <select id="getListByAll" resultType="PlanEntity">
+        SELECT *
+        from api_plan
+        where 1 = 1
+        <if test="startTime != null and startTime != '' ">and createTime &gt; #{startTime} </if>
+        <if test="endTime != null and endTime != '' ">and createTime &lt; #{endTime} </if>
+        <if test="merchantsId != null and merchantsId != '' ">and merchantsId = #{merchantsId} </if>
+        <if test="state != null and state != '' ">and state = #{state} </if>
+        <if test="ratio != null and ratio != '' ">and ratio = #{ratio} </if>
+        <if test="totalDay != null and totalDay != '' ">and totalDay = #{totalDay} </if>
+        <if test="number != null and number != '' ">and number = #{number} </if>
+        <if test="bankCode != null and bankCode != '' ">and bankCode = #{bankCode} </if>
+        <if test="name != null and name != '' ">and name = #{name} </if>
+        <if test="idCardNo != null and idCardNo != '' ">and idCardNo = #{idCardNo} </if>
+        <if test="cardNo != null and cardNo != '' ">and cardNo = #{cardNo} </if>
+        <if test="phone != null and phone != '' ">and phone = #{phone} </if>
+    </select> -->
+    
+    <select id="getListByAll" resultType="PlanEntity">
+        SELECT *
+        from api_plan_easy
+        where 1 = 1
+        <if test="starttime != null and starttime != '' ">and createTime &gt; #{starttime} </if>
+        <if test="finishtime != null and finishtime != '' ">and createTime &lt; #{finishtime} </if>
+        <if test="merchantId != null and merchantId != '' ">and merchantId = #{merchantId} </if>
+        <if test="state != null and state != '' ">and state = #{state} </if>
+        <if test="name != null and name != '' ">and name = #{name} </if>
+        <if test="cardNo != null and cardNo != '' ">and cardNo = #{cardNo} </if>
+        <if test="phone != null and phone != '' ">and phone = #{phone} </if>
+    </select>
+    
+    <select id="query" resultType="PlanEntity">
+        SELECT *
+        from api_plan_easy
+           where agentId in
+			<foreach collection="sList" index="index" item="item" open="(" separator="," close=")">
+                 #{item}       
+      	  	</foreach> 
+			<if test="starttime != null and starttime != '' ">and createTime &gt; #{starttime} </if>
+        	<if test="finishtime != null and finishtime != '' ">and createTime &lt; #{finishtime} </if>
+        	<if test="merchantId != null and merchantId != '' ">and merchantId = #{merchantId} </if>
+        	<if test="state != null and state != '' ">and state = #{state} </if>
+        	<if test="name != null and name != '' ">and name = #{name} </if>
+        	<if test="cardNo != null and cardNo != '' ">and cardNo = #{cardNo} </if>
+        	<if test="phone != null and phone != '' ">and phone = #{phone} </if>
+    </select>
+    
+    <select id="gets" resultType="PlanEntity">
+        SELECT *
+        from api_plan_easy
+        where agentId = #{agentId}
+        <if test="starttime != null and starttime != '' ">and createTime &gt; #{starttime} </if>
+        <if test="finishtime != null and finishtime != '' ">and createTime &lt; #{finishtime} </if>
+        <if test="merchantId != null and merchantId != '' ">and merchantId = #{merchantId} </if>
+        <if test="state != null and state != '' ">and state = #{state} </if>
+        <if test="name != null and name != '' ">and name = #{name} </if>
+        <if test="cardNo != null and cardNo != '' ">and cardNo = #{cardNo} </if>
+        <if test="phone != null and phone != '' ">and phone = #{phone} </if>
+    </select>
+
+</mapper>

@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.battcn.mapper.MerChantsMapper">
+	<resultMap id="MerChantsList" type="MerChants">
+		<id column="id" property="id" />
+		<result column="merChantId" property="merChantId" />
+		<result column="merName" property="merName" />
+		<result column="merMp" property="merMp" />
+		<result column="certNo" property="certNo" />
+		<result column="merStat" property="merStat" />
+		<result column="identifying" property="identifying" />
+		<result column="merChantFee" property="merChantFee" />
+		<result column="generationFee" property="generationFee" />
+		<result column="generationFeeRepayment" property="generationFeeRepayment" />
+		<result column="status" property="status" />
+		<result column="agentStatus" property="agentStatus" />
+		<result column="agentId" property="agentId"/>
+		<result column="institutionId" property="institutionId"/>
+		<result column="merType" property="merType"/>
+		<result column="oneMerId" property="oneMerId"/>
+		<result column="twoMerId" property="twoMerId"/>
+		<result column="threeMerId" property="threeMerId"/>
+		<result column="frozen" property="frozen"/>
+		<result column="faceImgUrl" property="faceImgUrl"/>
+		<result column="regDate" property="regDate"/>
+		<result column="merStatTime" property="merStatTime"/>
+		<result column="statusDate" property="statusDate"/>
+		<result column="startDate" property="startDate"/>
+		<result column="finishDate" property="finishDate"/>
+		<result column="appName" property="appName"/>
+		<result column="balance" property="balance"/>
+		<result column="balanceProfit" property="balanceProfit"/>
+		<result column="remarks" property="remarks"/>
+		<result column="onename" property="onename"/>
+		<result column="onemp" property="onemp"/>
+	</resultMap>
+	
+	<select id="*" resultMap="MerChantsList">
+		SELECT t.id,t.merChantId,t.merName,t.merMp,t.certNo,t.merStat,t.identifying,t.merChantFee,t.generationFee,t.generationFeeRepayment,t.status,t.agentStatus,t.agentId,
+		t.institutionId,t.merType,t.oneMerId,t.twoMerId,t.frozen,t.appId,t.threeMerId,t.regDate,t.merStatTime,t.statusDate,t.startDate,t.finishDate,t.appId,t.appName,t.remarks
+		FROM t_mp_merchants t 
+		<where>
+			1=1
+			<if test="merChantId != '' and merChantId != null">
+				AND t.merChantId = #{merChantId}
+			</if>
+			<if test="merName != '' and merName != null">
+				AND t.merName=#{merName}
+			</if>
+			<if test="merMp != '' and merMp != null">
+				AND t.merMp=#{merMp}
+			</if>
+			<if test="certNo != '' and certNo != null">
+				AND t.certNo=#{certNo}
+			</if>
+			<if test="merStat != '' and merStat != null">
+				AND t.merStat=#{merStat}
+			</if>
+			<if test="agentStatus != '' and agentStatus != null">
+				AND t.agentStatus=#{agentStatus}
+			</if>
+			<if test="merType != '' and merType != null">
+				AND t.merType=#{merType}
+			</if>
+			<if test="status != '' and status != null">
+				AND t.status=#{status}
+			</if>
+			<if test="agentId != '' and agentId != null">
+				AND t.agentId=#{agentId}
+			</if>
+			<if test="institutionId != '' and institutionId != null">
+				AND t.institutionId=#{institutionId}
+			</if>
+			<if test="frozen != '' and frozen != null">
+				AND t.frozen=#{frozen}
+			</if>
+			<if test="appId != '' and appId != null">
+				AND t.appId=#{appId}
+			</if>
+			<if test="oneMerId != '' and oneMerId != null">
+				AND t.oneMerId=#{oneMerId}
+			</if>
+			<if test="twoMerId != '' and twoMerId != null">
+				AND t.twoMerId=#{twoMerId}
+			</if>
+			<if test="threeMerId != '' and threeMerId != null">
+				AND t.threeMerId=#{threeMerId}
+			</if>
+		</where>
+	</select>
+	<!-- <select id="gain" resultMap="MerChantsList">
+		SELECT t.id,t.merChantId,t.merName,t.merMp,t.certNo,t.merStat,t.identifying,t.merChantFee,t.generationFee,t.generationFeeRepayment,t.status,t.agentStatus,t.agentId,
+		t.institutionId,t.merType,oneMerId,t.twoMerId,t.frozen,t.appId,t.threeMerId,t.regDate,t.merStatTime,t.statusDate,t.startDate,t.finishDate,t.appName,t.remarks,tt.balance,tt.balanceProfit
+		FROM t_mp_merchants t left join api_account tt on t.merChantId = tt.merChantId
+		<where>
+			1=1
+			<if test="merChantId != '' and merChantId != null">
+				AND t.merChantId = #{merChantId}
+			</if>
+			<if test="merName != '' and merName != null">
+				AND t.merName=#{merName}
+			</if>
+			<if test="merMp != '' and merMp != null">
+				AND t.merMp=#{merMp}
+			</if>
+			<if test="certNo != '' and certNo != null">
+				AND t.certNo=#{certNo}
+			</if>
+			<if test="merStat != '' and merStat != null">
+				AND t.merStat=#{merStat}
+			</if>
+			<if test="status != '' and status != null">
+				AND t.status=#{status}
+			</if>
+			<if test="agentId != '' and agentId != null">
+				AND t.agentId=#{agentId}
+			</if>
+			<if test="institutionId != '' and institutionId != null">
+				AND t.institutionId=#{institutionId}
+			</if>
+			<if test="frozen != '' and frozen != null">
+				AND t.frozen=#{frozen}
+			</if>
+			<if test="appId != '' and appId != null">
+				AND t.appId=#{appId}
+			</if>
+		</where>
+	</select>
+	 -->
+	<select id="query" resultMap="MerChantsList">
+		SELECT t.id,t.merChantId,t.merName,t.merMp,t.certNo,t.merStat,t.identifying,t.merChantFee,t.generationFee,t.generationFeeRepayment,t.status,t.agentStatus,t.agentId,
+		t.institutionId,t.merType,oneMerId,t.twoMerId,t.frozen,t.appId,t.threeMerId,t.regDate,t.merStatTime,t.statusDate,t.startDate,t.finishDate,t.appId,t.appName,t.remarks
+		FROM t_mp_merchants t 
+		<where>
+			t.agentId in
+			<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+                 #{item}       
+      	  	</foreach>    
+			<if test="merChantId != '' and merChantId != null">
+				AND t.merChantId = #{merChantId}
+			</if>
+			<if test="merName != '' and merName != null">
+				AND t.merName=#{merName}
+			</if>
+			<if test="merMp != '' and merMp != null">
+				AND t.merMp=#{merMp}
+			</if>
+			<if test="certNo != '' and certNo != null">
+				AND t.certNo=#{certNo}
+			</if>
+			<if test="merStat != '' and merStat != null">
+				AND t.merStat=#{merStat}
+			</if>
+			<if test="status != '' and status != null">
+				AND t.status=#{status}
+			</if>
+			<if test="agentId != '' and agentId != null">
+				AND t.agentId=#{agentId}
+			</if>
+			<if test="institutionId != '' and institutionId != null">
+				AND t.institutionId=#{institutionId}
+			</if>
+				<if test="appId != '' and appId != null">
+				AND t.appId=#{appId}
+			</if>
+			<if test="frozen != '' and frozen != null">
+				AND t.frozen=#{frozen}
+			</if>
+		</where>
+	</select>
+<!-- 	<select id="query" resultMap="MerChantsList">
+		SELECT t.id,t.merChantId,t.merName,t.merMp,t.certNo,t.merStat,t.identifying,t.merChantFee,t.generationFee,t.generationFeeRepayment,t.status,t.agentStatus,t.agentId,
+		t.institutionId,t.merType,oneMerId,t.twoMerId,t.threeMerId,t.regDate,t.merStatTime,t.statusDate,t.startDate,t.finishDate,t.appName,t.remarks,tt.balance,tt.balanceProfit
+		FROM t_mp_merchants t left join api_account tt on t.merChantId = tt.merChantId
+		<where>
+			t.agentId in
+			<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+                 #{item}       
+      	  	</foreach>    
+			<if test="merChantId != '' and merChantId != null">
+				AND t.merChantId = #{merChantId}
+			</if>
+			<if test="merName != '' and merName != null">
+				AND t.merName=#{merName}
+			</if>
+			<if test="merMp != '' and merMp != null">
+				AND t.merMp=#{merMp}
+			</if>
+			<if test="certNo != '' and certNo != null">
+				AND t.certNo=#{certNo}
+			</if>
+			<if test="merStat != '' and merStat != null">
+				AND t.merStat=#{merStat}
+			</if>
+			<if test="status != '' and status != null">
+				AND t.status=#{status}
+			</if>
+			<if test="agentId != '' and agentId != null">
+				AND t.agentId=#{agentId}
+			</if>
+			<if test="institutionId != '' and institutionId != null">
+				AND t.institutionId=#{institutionId}
+			</if>
+		</where>
+	</select> -->
+	
+	<update id="alter">  
+        UPDATE t_mp_merchants set generationFee = #{generationFee} , generationFeeRepayment = #{generationFeeRepayment}     
+	</update>  
+	
+	<update id="amend">  
+        UPDATE t_mp_merchants set generationFeeRepayment = #{generationFeeRepayment}     
+	</update>
+	
+	<select id="gets" resultMap="MerChantsList">
+	    SELECT t.id,t.merChantId,t.merName,t.merMp,t.certNo,t.merStat,t.identifying,t.merChantFee,t.generationFee,t.generationFeeRepayment,t.status,t.agentStatus,t.agentId,
+		t.institutionId,t.merType,oneMerId,t.twoMerId,t.threeMerId,t.frozen,t.regDate,t.merStatTime,t.statusDate,t.startDate,t.finishDate,t.appId,t.appName,t.remarks
+		FROM t_mp_merchants t
+		<where>
+			1=1
+			<if test="merChantId != '' and merChantId != null">
+				AND t.merChantId = #{merChantId}
+			</if>
+			<if test="merName != '' and merName != null">
+				AND t.merName=#{merName}
+			</if>
+			<if test="merMp != '' and merMp != null">
+				AND t.merMp=#{merMp}
+			</if>
+			<if test="certNo != '' and certNo != null">
+				AND t.certNo=#{certNo}
+			</if>
+			<if test="merStat != '' and merStat != null">
+				AND t.merStat=#{merStat}
+			</if>
+			<if test="status != '' and status != null">
+				AND t.status=#{status}
+			</if>
+			<if test="agentId != '' and agentId != null">
+				AND t.agentId=#{agentId}
+			</if>
+			<if test="appId != '' and appId != null">
+				AND t.appId=#{appId}
+			</if>
+			<if test="frozen != '' and frozen != null">
+				AND t.frozen=#{frozen}
+			</if>
+		</where>
+	</select>
+<!-- 	<select id="gets" resultMap="MerChantsList">
+	    SELECT t.id,t.merChantId,t.merName,t.merMp,t.certNo,t.merStat,t.identifying,t.merChantFee,t.generationFee,t.generationFeeRepayment,t.status,t.agentStatus,t.agentId,
+		t.institutionId,t.merType,oneMerId,t.twoMerId,t.threeMerId,t.regDate,t.merStatTime,t.statusDate,t.startDate,t.finishDate,t.appId,t.appName,t.remarks,tt.balance,tt.balanceProfit
+		FROM t_mp_merchants t left join api_account tt on t.merChantId = tt.merChantId
+		<where>
+			1=1
+			<if test="merChantId != '' and merChantId != null">
+				AND t.merChantId = #{merChantId}
+			</if>
+			<if test="merName != '' and merName != null">
+				AND t.merName=#{merName}
+			</if>
+			<if test="merMp != '' and merMp != null">
+				AND t.merMp=#{merMp}
+			</if>
+			<if test="certNo != '' and certNo != null">
+				AND t.certNo=#{certNo}
+			</if>
+			<if test="merStat != '' and merStat != null">
+				AND t.merStat=#{merStat}
+			</if>
+			<if test="status != '' and status != null">
+				AND t.status=#{status}
+			</if>
+			<if test="agentId != '' and agentId != null">
+				AND t.agentId=#{agentId}
+			</if>
+			<if test="appId != '' and appId != null">
+				AND t.appId=#{appId}
+			</if>
+		</where>
+	</select> -->
+	<select id="gain" resultMap="MerChantsList">
+		SELECT   FIRST.id,FIRST.merChantId,FIRST.merName,FIRST.merMp,FIRST.certNo,FIRST.merStat,FIRST.identifying,FIRST.merChantFee,FIRST.generationFee,FIRST.generationFeeRepayment,FIRST.status,FIRST.agentStatus,FIRST.agentId,
+		FIRST.institutionId,FIRST.merType,FIRST.oneMerId,FIRST.twoMerId,FIRST.frozen,FIRST.appId,FIRST.threeMerId,FIRST.regDate,FIRST.merStatTime,FIRST.statusDate,FIRST.startDate,FIRST.finishDate,FIRST.appId,FIRST.appName,FIRST.remarks,
+		second.merName AS onename,second.merMp AS onemp
+		FROM t_mp_merchants
+		FIRST LEFT JOIN t_mp_merchants SECOND ON (FIRST.oneMerId=Second.merChantId)
+		<where>
+			1=1
+			<if test="merChantId != '' and merChantId != null">
+				AND FIRST.merChantId = #{merChantId}
+			</if>
+			<if test="merName != '' and merName != null">
+				AND FIRST.merName=#{merName}
+			</if>
+			<if test="merMp != '' and merMp != null">
+				AND FIRST.merMp=#{merMp}
+			</if>
+			<if test="certNo != '' and certNo != null">
+				AND FIRST.certNo=#{certNo}
+			</if>
+			<if test="merStat != '' and merStat != null">
+				AND FIRST.merStat=#{merStat}
+			</if>
+			<if test="agentStatus != '' and agentStatus != null">
+				AND FIRST.agentStatus=#{agentStatus}
+			</if>
+			<if test="merType != '' and merType != null">
+				AND FIRST.merType=#{merType}
+			</if>
+			<if test="status != '' and status != null">
+				AND FIRST.status=#{status}
+			</if>
+			<if test="agentId != '' and agentId != null">
+				AND FIRST.agentId=#{agentId}
+			</if>
+			<if test="institutionId != '' and institutionId != null">
+				AND FIRST.institutionId=#{institutionId}
+			</if>
+			<if test="frozen != '' and frozen != null">
+				AND FIRST.frozen=#{frozen}
+			</if>
+			<if test="appId != '' and appId != null">
+				AND FIRST.appId=#{appId}
+			</if>
+			<if test="oneMerId != '' and oneMerId != null">
+				AND FIRST.oneMerId=#{oneMerId}
+			</if>
+			<if test="twoMerId != '' and twoMerId != null">
+				AND FIRST.twoMerId=#{twoMerId}
+			</if>
+			<if test="threeMerId != '' and threeMerId != null">
+				AND FIRST.threeMerId=#{threeMerId}
+			</if>
+			<if test="onename != '' and onename != null">
+				AND FIRST.onename=#{onename}
+			</if>
+			<if test="onemp != '' and onemp != null">
+				AND FIRST.onemp=#{onemp}
+			</if>
+		</where>
+
+	</select>
+</mapper>

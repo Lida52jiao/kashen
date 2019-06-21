@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.battcn.mapper.AlipayOrderEntityMapper">
+	
+	<select id="get" resultType="AlipayOrderEntity">
+		SELECT * 
+		FROM api_order_alipay
+		<where>
+			1=1
+			<if test="merchantId != '' and merchantId != null" >
+			  	AND merchantId = #{merchantId}
+			</if>
+			<if test="agentId != '' and agentId != null" >
+			  	AND agentId = #{agentId}
+			</if>
+			<if test="phone != '' and phone != null" >
+			  	AND phone = #{phone}
+			</if>
+			<if test="orderNo != '' and orderNo != null" >
+			  	AND orderNo = #{orderNo}
+			</if>
+			<if test="state != '' and state != null" >
+			  	AND state = #{state}
+			</if>
+			<if test="type != '' and type != null" >
+			  	AND type = #{type}
+			</if>
+			<if test="appId != '' and appId != null" >
+			  	AND appId = #{appId}
+			</if>
+			<if test="starttime != '' and starttime != null" >
+			  	 <![CDATA[ and createTime  >=  #{starttime}  ]]>
+			</if>
+			<if test="finishtime != '' and finishtime != null" >
+			  	 <![CDATA[ and createTime  <=  #{finishtime}  ]]>
+			</if>
+		</where>
+	 </select>
+	 <select id="getByApp" resultType="AlipayOrderEntity">
+		SELECT * 
+		FROM api_order_alipay
+		<where>
+			1=1
+			<if test="merchantId != '' and merchantId != null" >
+			  	AND merchantId = #{merchantId}
+			</if>
+			<if test="agentId != '' and agentId != null" >
+			  	AND agentId = #{agentId}
+			</if>
+			<if test="phone != '' and phone != null" >
+			  	AND phone = #{phone}
+			</if>
+			<if test="orderNo != '' and orderNo != null" >
+			  	AND orderNo = #{orderNo}
+			</if>
+			<if test="state != '' and state != null" >
+			  	AND state = #{state}
+			</if>
+			<if test="type != '' and type != null" >
+			  	AND type = #{type}
+			</if>
+			<if test="appId != '' and appId != null" >
+			  	AND appId = #{appId}
+			</if>
+			<if test="appId != '' and appId != null" >
+			  	AND appId = #{appId}
+			</if>
+			<if test="starttime != '' and starttime != null" >
+			  	 <![CDATA[ and createTime  >=  #{starttime}  ]]>
+			</if>
+			<if test="finishtime != '' and finishtime != null" >
+			  	 <![CDATA[ and createTime  <=  #{finishtime}  ]]>
+			</if>
+		</where>
+	 </select>
+	 <select id="getByAgent" resultType="AlipayOrderEntity">
+		SELECT * 
+		FROM api_order_alipay
+		<where>
+			agentId in 
+			<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+                 #{item}       
+      	  	</foreach>  
+			<if test="merchantId != '' and merchantId != null" >
+			  	AND merchantId = #{merchantId}
+			</if>
+			<if test="agentId != '' and agentId != null" >
+			  	AND agentId = #{agentId}
+			</if>
+			<if test="phone != '' and phone != null" >
+			  	AND phone = #{phone}
+			</if>
+			<if test="orderNo != '' and orderNo != null" >
+			  	AND orderNo = #{orderNo}
+			</if>
+			<if test="state != '' and state != null" >
+			  	AND state = #{state}
+			</if>
+			<if test="type != '' and type != null" >
+			  	AND type = #{type}
+			</if>
+			<if test="appId != '' and appId != null" >
+			  	AND appId = #{appId}
+			</if>
+			<if test="starttime != '' and starttime != null" >
+			  	 <![CDATA[ and createTime  >=  #{starttime}  ]]>
+			</if>
+			<if test="finishtime != '' and finishtime != null" >
+			  	 <![CDATA[ and createTime  <=  #{finishtime}  ]]>
+			</if>
+		</where>
+	 </select>
+	 
+	 <select id="gain" resultType="Double">
+		SELECT sum(totalAmount)
+		FROM api_order_alipay
+		<where>
+			1=1
+			<if test="merchantId != '' and merchantId != null" >
+			  	AND merchantId = #{merchantId}
+			</if>
+			<if test="type != '' and type != null" >
+			  	AND type = #{type}
+			</if>
+			<if test="start != '' and start != null" >
+				AND createTime &gt; #{start}
+			</if>
+			<if test="end != '' and end != null">
+				AND createTime &lt; #{end}
+			</if>
+			<if test="merId != '' and merId != null">
+				AND agentId = #{merId}
+			</if>
+			AND state = 3
+			 	<!-- AND institutionId='T00000000' -->
+		</where>
+	 </select>
+	 
+	  <select id="gets" resultType="Double">
+		SELECT sum(totalAmount) t
+		FROM api_order_alipay
+		<where>
+			agentId in
+			<foreach collection="tList" index="index" item="item" open="(" separator="," close=")">
+                 #{item}       
+      	  	</foreach> 
+			<if test="merchantId != '' and merchantId != null" >
+			  	AND merchantId = #{merchantId}
+			</if>
+			<if test="type != '' and type != null" >
+			  	AND type = #{type}
+			</if>
+			<if test="start != '' and start != null" >
+				AND createTime &gt; #{start}
+			</if>
+			<if test="end != '' and end != null">
+				AND createTime &lt; #{end}
+			</if>
+			AND state = 3
+			 	<!-- AND institutionId='T00000000' -->
+		</where>
+	 </select>
+	 
+	  <select id="alter" resultType="Double">
+		SELECT sum(totalAmount) t
+		FROM api_order_alipay
+		<where>
+			agentId = #{agentId}
+			<if test="merchantId != '' and merchantId != null" >
+			  	AND merchantId = #{merchantId}
+			</if>
+			<if test="type != '' and type != null" >
+			  	AND type = #{type}
+			</if>
+			<if test="start != '' and start != null" >
+				AND createTime &gt; #{start}
+			</if>
+			<if test="end != '' and end != null">
+				AND createTime &lt; #{end}
+			</if>
+			AND state = 3
+			 	<!-- AND institutionId='T00000000' -->
+		</where>
+	 </select>
+	 
+	 <select id="gains" resultType="Double">
+		SELECT sum(reducedAmount)
+		FROM api_order_alipay
+		<where>
+			1=1
+			<if test="merchantId != '' and merchantId != null" >
+			  	AND merchantId = #{merchantId}
+			</if>
+			<if test="type != '' and type != null" >
+			  	AND type = #{type}
+			</if>
+			<if test="start != '' and start != null" >
+				AND createTime &gt; #{start}
+			</if>
+			<if test="end != '' and end != null">
+				AND createTime &lt; #{end}
+			</if>
+			AND state = 3
+			 	<!-- AND institutionId='T00000000' -->
+		</where>
+	 </select>
+	 
+	  <select id="getAmount" resultType="Double">
+		SELECT sum(reducedAmount) t
+		FROM api_order_alipay
+		<where>
+			agentId in
+			<foreach collection="tList" index="index" item="item" open="(" separator="," close=")">
+                 #{item}       
+      	  	</foreach> 
+			<if test="merchantId != '' and merchantId != null" >
+			  	AND merchantId = #{merchantId}
+			</if>
+			<if test="type != '' and type != null" >
+			  	AND type = #{type}
+			</if>
+			<if test="start != '' and start != null" >
+				AND createTime &gt; #{start}
+			</if>
+			<if test="end != '' and end != null">
+				AND createTime &lt; #{end}
+			</if>
+			AND state = 3
+			 	<!-- AND institutionId='T00000000' -->
+		</where>
+	 </select>
+	 
+	  <select id="selectAmounts" resultType="Double">
+		SELECT sum(reducedAmount) t
+		FROM api_order_alipay
+		<where>
+			agentId = #{agentId}
+			<if test="merchantId != '' and merchantId != null" >
+			  	AND merchantId = #{merchantId}
+			</if>
+			<if test="type != '' and type != null" >
+			  	AND type = #{type}
+			</if>
+			<if test="start != '' and start != null" >
+				AND createTime &gt; #{start}
+			</if>
+			<if test="end != '' and end != null">
+				AND createTime &lt; #{end}
+			</if>
+			AND state = 3
+			 	<!-- AND institutionId='T00000000' -->
+		</where>
+	 </select>
+	 
+</mapper>

@@ -1,0 +1,115 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
+<div class="ibox float-e-margins">
+	<div class="ibox-content">
+		<form class="form-horizontal m-t required-validate" id="floorNumberForm">
+			 
+			<div class="form-group">
+				<label class="col-sm-3 control-label">代理商号：</label>
+				<div class="col-sm-8">
+					<input id="merId" name="merId"  class="form-control" type="text" value="${transaction.merId }" readonly="readonly">
+						<!-- validate="{required:true,messages:{required:'请填写角色名'}}"> -->
+						<span class="help-block m-b-none">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">还款底价：</label>
+				<div class="col-sm-8">
+					<input id="floorNumber" name="floorNumber"  class="form-control" type="text" value="${transaction.floorNumber }">
+						<span class="help-block m-b-none">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">提现代发费：</label>
+				<div class="col-sm-8">
+					<input id="generationFee" name="generationFee"  class="form-control" type="text" value="${transaction.generationFee }">
+						<span class="help-block m-b-none">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">还款代发费：</label>
+				<div class="col-sm-8">
+					<input id="generationFeeRepayment" name="generationFeeRepayment"  class="form-control" type="text" value="${transaction.generationFeeRepayment }">
+						<span class="help-block m-b-none">
+				</div>
+			</div>
+			<%-- <div class="form-group">
+				<label class="col-sm-3 control-label">有积分无卡费率费：</label>
+				<div class="col-sm-8">
+					<input id="fee0" name="fee0"  class="form-control" type="text" value="${transaction.fee0/10 }">
+						<span class="help-block m-b-none">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">有积分无卡提现费：</label>
+				<div class="col-sm-8">
+					<input id="d0fee" name="d0fee"  class="form-control" type="text" value="${transaction.d0fee/100 }">
+						<span class="help-block m-b-none">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">无积分无卡费率费：</label>
+				<div class="col-sm-8">
+					<input id="fee1" name="fee1"  class="form-control" type="text" value="${transaction.fee1/10 }">
+						<span class="help-block m-b-none">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">无积分无卡提现费：</label>
+				<div class="col-sm-8">
+					<input id="d1fee" name="d1fee"  class="form-control" type="text" value="${transaction.d1fee/100 }">
+						<span class="help-block m-b-none">
+				</div>
+			</div> --%>
+		</form>
+	</div>
+</div>
+<script>
+   $(document).ready(function(){$(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",})});
+</script>
+
+<script type="text/javascript">
+
+ $(function(){
+  	save = function(obj) {
+  		if($("#floorNumberForm").valid()){
+  			$.ajax({
+				type: "POST", 
+				url: rootPath + "/Transaction/alter.shtml",
+				data: $('#floorNumberForm').serializeArray(),
+				success: function(data){
+					if(data == "f") {
+						layer.confirm('请先联系你的上级代理商,设置你的结算底价或代发费用', function(index) {
+							battcn.closeWindow();
+							$('#floorNumberTable').bootstrapTable('refresh');
+				        	return false;
+ 						});
+					}
+					if(data == "fail") {
+						layer.confirm('设置的结算底价或代发费用过低,请重新设置', function(index) {
+							battcn.closeWindow();
+							$('#floorNumberTable').bootstrapTable('refresh');
+				        	return false;
+ 						});
+					}
+					if(data == "success") {
+						layer.confirm('保存成功!是否关闭窗口?', function(index) {
+							battcn.closeWindow();
+							$('#floorNumberTable').bootstrapTable('refresh');
+				        	return false;
+ 						});
+					}
+					battcn.toastrsAlert({
+		       		     code: data.success ? 'success' :'error',
+		       		     msg: data.success ? '成功' :'失败'
+		       		});
+				}
+			});
+  		}
+	} 
+	
+ }); 
+</script>

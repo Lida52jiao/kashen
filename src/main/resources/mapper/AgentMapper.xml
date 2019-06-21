@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.battcn.mapper.AgentMapper">
+	<resultMap id="AgentList" type="Agent">
+		<id column="id" property="id" />
+		<result column="merId" property="merId" />
+		<result column="merName" property="merName" />
+		<result column="merMp" property="merMp" />
+		<result column="accountNumber" property="accountNumber" />
+		<result column="password" property="password" />
+		<result column="mailbox" property="mailbox" />
+		<result column="oneMerId" property="oneMerId" />
+		<result column="totalCode" property="totalCode" />
+		<result column="generatedCode" property="generatedCode"/>
+		<result column="used" property="used"/>
+		<result column="notused" property="notused"/>
+		<result column="assign" property="assign"/>
+		<result column="allocated" property="allocated"/>
+		<result column="creatDate" property="creatDate"/>
+		<result column="remarks" property="remarks"/>
+	</resultMap>
+	
+	<select id="get" resultType="Agent">
+		SELECT *
+		FROM t_mp_agent
+		<where>
+			1=1
+			<if test="merId != '' and merId != null">
+				AND merId = #{merId}
+			</if>
+			<if test="merName != '' and merName != null">
+				AND merName=#{merName}
+			</if>
+			<if test="merMp != '' and merMp != null">
+				AND merMp=#{merMp}
+			</if>
+		</where>
+	</select>
+	
+	<select id="query" resultType="com.battcn.entity.Agentshow">
+		SELECT *
+		FROM t_mp_agent
+		<where>
+			1=1
+			<if test="merId != '' and merId != null">
+				AND merId = #{merId}
+			</if>
+			<if test="merName != '' and merName != null">
+				AND merName=#{merName}
+			</if>
+			<if test="merMp != '' and merMp != null">
+				AND merMp=#{merMp}
+			</if>
+		</where>
+	</select>
+	<select id="list" resultMap="AgentList">
+			SELECT FIRST .merId,FIRST.merName,FIRST.merMp,FIRST.accountNumber,FIRST.mailbox,SECOND.merChantId FROM t_mp_agent
+			FIRST LEFT JOIN
+			t_mp_transaction SECOND ON (FIRST.merId=SECOND.merId)
+
+		<where>
+			1=1
+			<if test="merId != '' and merId != null">
+				AND FIRST.merId = #{merId}
+			</if>
+			<if test="merName != '' and merName != null">
+				AND FIRST.merName=#{merName}
+			</if>
+			<if test="merMp != '' and merMp != null">
+				AND FIRST.merMp=#{merMp}
+			</if>
+		</where>
+	</select>
+</mapper>

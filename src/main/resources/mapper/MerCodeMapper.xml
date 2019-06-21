@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.battcn.mapper.MerCodeMapper">
+
+	<select id="getLock" resultType="MerCode">
+        SELECT merId,merName,oneMerId,totalCode,generatedCode,used,notused,assign FROM t_mp_merCode WHERE merId=#{agentId} FOR UPDATE;
+    </select>
+	
+	<select id="get" resultType="MerCode">
+	    select * from t_mp_merCode where merId = #{merId}
+	</select>
+	
+	<update id="alter">
+        UPDATE t_mp_merCode SET generatedCode=generatedCode+#{generatedCode},notused=notused+#{notused},assign=assign+#{assign} WHERE merId=#{agentId};
+    </update>
+    
+    <update id="revises">
+        UPDATE t_mp_merCode SET used=used+#{used},notused=notused+#{notused} WHERE merId=#{agentId};
+    </update>
+    
+    <select id="gets" resultType="MerCode">
+	    select * from t_mp_merCode
+	    <where>
+			1=1
+			<if test="merId != '' and merId != null">
+				AND merId = #{merId}
+			</if>
+			<if test="merName != '' and merName != null">
+				AND merName=#{merName}
+			</if>
+			<if test="oneMerId != '' and oneMerId != null">
+				AND oneMerId=#{oneMerId}
+			</if>
+		</where>
+	</select>
+	
+	 <update id="renew">
+        UPDATE t_mp_merCode SET totalCode=totalCode+#{totalCode},assign=assign+#{totalCode} WHERE merId=#{agentId};
+    </update>
+</mapper>

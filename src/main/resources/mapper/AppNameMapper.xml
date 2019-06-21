@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.battcn.mapper.AppNameMapper">
+	<resultMap id="AppNameList" type="AppName">
+		<id column="appId" property="appId" />
+		<result column="appName" property="appName" />
+	</resultMap>
+	
+	<select id="getAppList" resultMap="AppNameList">
+		SELECT *
+		FROM t_mp_appname
+		<where>
+			1=1
+		</where>
+	</select>
+	<select id="getApp" resultMap="AppNameList">
+		SELECT *
+		FROM t_mp_appname
+		<where>
+			agentId = #{agentId}
+		</where>
+	</select>
+	
+	<select id="getAppByAgentId" resultMap="AppNameList">
+		SELECT *
+		FROM t_mp_appname
+		<where>
+			agentId = #{agentId}
+		</where>
+	</select>
+</mapper>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.battcn.mapper.TradeMapper">
+	<resultMap id="TradesList" type="Order">
+		<id column="oId" property="oId" />
+		<result column="orderNo" property="orderNo" />
+		<result column="state" property="state" />
+		<result column="type" property="type" />
+		<result column="createTime" property="createTime" />
+		<result column="amount" property="amount" />
+		<result column="profitFee" property="profitFee" />
+		<result column="merchantId" property="merchantId" />
+		<result column="agentId" property="agentId"/>
+		<result column="merName" property="agentName"/>
+		<result column="institutionId" property="institutionId"/>
+		<result column="cardId" property="cardId"/>
+		<result column="bankCode" property="bankCode"/>
+		<result column="cardNo" property="cardNo"/>
+		<result column="remarks" property="remarks"/>
+	</resultMap>
+	
+	<select id="gain" resultMap="TradesList">
+		SELECT *
+		FROM api_order left join t_mp_agent on api_order.agentId = t_mp_agent.merId
+		<where>
+			1=1  
+			<if test="merchantId != '' and merchantId != null">
+				AND merchantId = #{merchantId}
+			</if>
+			<if test="type != '' and type != null">
+				AND type=#{type}
+			</if>
+			<if test="state != '' and state != null">
+				AND state=#{state}
+			</if>
+			<if test="agentId != '' and agentId != null">
+				AND agentId=#{agentId}
+			</if>
+			<if test="institutionId != '' and institutionId != null">
+				AND institutionId=#{institutionId}
+			</if>
+			AND state != 1
+		</where>
+	</select>
+	
+	<select id="query" resultMap="TradesList">
+		SELECT *
+		FROM api_order
+		<where>
+			agentId in
+			<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+                 #{item}       
+      	  	</foreach>    
+			<if test="merchantId != '' and merchantId != null">
+				AND merchantId = #{merchantId}
+			</if>
+			<if test="type != '' and type != null">
+				AND type=#{type}
+			</if>
+			<if test="state != '' and state != null">
+				AND state=#{state}
+			</if>
+			<if test="agentId != '' and agentId != null">
+				AND agentId=#{agentId}
+			</if>
+			<if test="institutionId != '' and institutionId != null">
+				AND institutionId=#{institutionId}
+			</if>
+			AND state != 1
+		</where>
+	</select>
+	
+	<select id="get" resultType="Double">
+		SELECT sum(amount)
+		FROM api_plan_detail_easy
+		<where>
+			1=1
+			<if test="merchantId != '' and merchantId != null" >
+			  	AND merchantId = #{merchantId}
+			</if>
+			<if test="start != '' and start != null" >
+				AND executeTime &gt; #{start}
+			</if>
+			<if test="end != '' and end != null">
+				AND executeTime &lt; #{end}
+			</if>
+			<if test="merId != '' and merId != null">
+				AND agentId = #{merId}
+			</if>
+			AND payState = 3
+			 	<!-- AND institutionId='T00000000' -->
+		</where>
+	 </select>
+	 
+	  <select id="gets" resultType="Double">
+		SELECT sum(amount) t
+		FROM api_plan_detail_easy
+		<where>
+			agentId in
+			<foreach collection="tList" index="index" item="item" open="(" separator="," close=")">
+                 #{item}       
+      	  	</foreach> 
+			<if test="merchantId != '' and merchantId != null" >
+			  	AND merchantId = #{merchantId}
+			</if>
+			<if test="start != '' and start != null" >
+				AND executeTime &gt; #{start}
+			</if>
+			<if test="end != '' and end != null">
+				AND executeTime &lt; #{end}
+			</if>
+			AND payState = 3
+			 	<!-- AND institutionId='T00000000' -->
+		</where>
+	 </select>
+	 
+	  <select id="alter" resultType="Double">
+		SELECT sum(amount) t
+		FROM api_plan_detail_easy
+		<where>
+			agentId = #{agentId}
+			<if test="merchantId != '' and merchantId != null" >
+			  	AND merchantId = #{merchantId}
+			</if>
+			<if test="start != '' and start != null" >
+				AND executeTime &gt; #{start}
+			</if>
+			<if test="end != '' and end != null">
+				AND executeTime &lt; #{end}
+			</if>
+			AND payState = 3
+			 	<!-- AND institutionId='T00000000' -->
+		</where>
+	 </select>
+</mapper>

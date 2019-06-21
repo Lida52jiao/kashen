@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.battcn.mapper.WithdrawEntityMapper">
+	<resultMap id="WithdrawList" type="Withdraw">
+		<id column="oId" property="oId" />
+		<result column="orderNo" property="orderNo" />
+		<result column="state" property="state" />
+		<result column="type" property="type" />
+		<result column="createTime" property="createTime" />
+		<result column="amount" property="amount" />
+		<result column="arrivalAmount" property="arrivalAmount" />
+		<result column="profitFee" property="profitFee" />
+		<result column="cardNo" property="cardNo"/>
+		<result column="merchantId" property="merchantId"/>
+		<result column="merchantName" property="merchantName"/>
+		<result column="merchantPhone" property="merchantPhone"/>
+		<result column="merName" property="agentName"/>
+		<result column="institutionId" property="institutionId"/>
+		<result column="appId" property="appId"/>
+		<result column="appName" property="appName"/>
+		<result column="cardId" property="cardId"/>
+		<result column="bankCode" property="bankCode"/>
+		<result column="cardNo" property="cardNo"/>
+		<result column="firstTime" property="firstTime"/>
+		<result column="firstName" property="firstName"/>
+		<result column="secondTime" property="secondTime"/>
+		<result column="secondName" property="secondName"/>
+		<result column="remarks" property="remarks"/>
+	</resultMap>
+	
+	<select id="gain" resultMap="WithdrawList">
+		SELECT *
+		FROM api_order_withdraw left join t_mp_agent on api_order_withdraw.agentId = t_mp_agent.merId
+		<where>
+			1=1  
+			<if test="merchantId != '' and merchantId != null">
+				AND merchantId = #{merchantId}
+			</if>
+			<if test="start != '' and start != null" >
+				AND createTime &gt; #{start}
+			</if>
+			<if test="end != '' and end != null">
+				AND createTime &lt; #{finish}
+			</if>
+			  AND state = '1'
+		</where>
+	</select>
+	
+	<select id="get" resultMap="WithdrawList">
+		SELECT *
+		FROM api_order_withdraw left join t_mp_agent on api_order_withdraw.agentId = t_mp_agent.merId
+		<where>
+			1=1  
+			<if test="merchantId != '' and merchantId != null">
+				AND merchantId = #{merchantId}
+			</if>
+			<if test="start != '' and start != null" >
+				AND createTime &gt; #{start}
+			</if>
+			<if test="end != '' and end != null">
+				AND createTime &lt; #{finish}
+			</if>
+			  AND state = '2'
+		</where>
+	</select>
+	
+	<select id="finds" resultMap="WithdrawList">
+		SELECT *
+		FROM api_order_withdraw left join t_mp_agent on api_order_withdraw.agentId = t_mp_agent.merId
+		<where>
+			1=1  
+			<if test="merchantId != '' and merchantId != null">
+				AND merchantId = #{merchantId}
+			</if>
+			<if test="agentId != '' and agentId != null">
+				AND agentId = #{agentId}
+			</if>
+			<if test="orderNo != '' and orderNo != null">
+				AND orderNo = #{orderNo}
+			</if>
+			<if test="state != '' and state != null">
+				AND state = #{state}
+			</if>
+			<if test="merchantName != '' and merchantName != null">
+				AND merchantName = #{merchantName}
+			</if>
+			<if test="cardNo != '' and cardNo != null">
+				AND cardNo = #{cardNo}
+			</if>
+			<if test="bankCode != '' and bankCode != null">
+				AND bankCode = #{bankCode}
+			</if>
+			<if test="start != '' and start != null" >
+				AND createTime &gt; #{start}
+			</if>
+			<if test="end != '' and end != null">
+				AND createTime &lt; #{finish}
+			</if>
+		</where>
+	</select>
+	
+</mapper>

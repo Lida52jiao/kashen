@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.battcn.mapper.TransactionMapper">
+      	<resultMap id="TransactionList" type="Transaction">
+		<id column="id" property="id" />
+		<result column="merId" property="merId" />
+		<result column="agentName" property="agentName" />
+		<result column="agentId" property="agentId" />
+		<result column="merChantId" property="merChantId" />
+		<result column="floorNumber" property="floorNumber" />
+		<result column="generationFee" property="generationFee" />
+		<result column="generationFeeRepayment" property="generationFeeRepayment" />
+		<result column="fee0" property="fee0" />
+		<result column="d0fee" property="d0fee" />
+		<result column="d1fee" property="d1fee" />
+		<result column="fee2" property="fee2" />
+		<result column="d2fee" property="d2fee"/>
+		<result column="creatDate" property="creatDate"/>
+		<result column="updateName" property="updateName"/>
+		<result column="updateDate" property="updateDate"/>
+		<result column="appId" property="appId"/>
+		<result column="appName" property="appName"/>
+		<result column="remarks" property="remarks"/>
+	</resultMap>
+     <select id="selectAllList" resultType="Transaction">
+       	SELECT *
+		FROM t_mp_transaction
+		<where>
+		    1=1
+				<if test="merChantId != '' and merChantId != null" >
+				  	AND merChantId = #{merChantId}
+				</if>
+				<if test="merId != '' and merId != null" >
+				  	AND merId = #{merId}
+				</if>
+				<if test="agentName != '' and agentName != null" >
+					AND agentName = #{agentName}
+				</if>
+			</where>
+    </select>
+  <select id="selectByPageList" resultMap="TransactionList">
+       	SELECT *
+		FROM t_mp_transaction t
+		<where>
+		     merId in
+					<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+		                 #{item}       
+		      	  	</foreach> 
+		 		<if test="merId != '' and merId != null" >
+				  	AND t.merId = #{merId}
+				</if>
+				<if test="agentStatus != '' and agentStatus != null" >
+					AND t.agentStatus = #{agentStatus}
+				</if> 
+			</where>
+    </select>
+<select id="selectByPageForNoCardList" resultMap="TransactionList">
+       	SELECT *
+		FROM t_mp_transaction t,t_mp_merchants m
+		<where>
+		    t.merChantId = m.merChantId
+				<if test="merId != '' and merId != null" >
+				  	AND t.merId = #{merId}
+				</if>
+				<if test="agentStatus != '' and agentStatus != null" >
+					AND t.agentStatus = #{agentStatus}
+				</if>
+				<if test="appId != '' and appId != null" >
+					AND m.appId = #{appId}
+				</if>
+			</where>
+    </select>
+</mapper>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.battcn.mapper.PlanDetailMapper">
+    <!-- 回收策略为先进先出 --> <!-- 自动刷新时间60s --><!-- 最多缓存512个引用对象 -->
+    <!-- <cache eviction="FIFO" flushInterval="30000" size="512" readOnly="false" /> --> <!-- 只读 -->
+
+    <select id="getExpireList" resultType="PlanDetailEntity">
+        SELECT * from api_plan_detail where executeTime &lt; #{newDate} and state = 2 order by executeTime asc
+    </select>
+    <!--<select id="findPlanDetailByAll" resultType="com.binbinbin.entity.PlanDetailEntity">
+        SELECT *
+        from api_plan_detail
+        where 1 = 1
+        <if test="orderNo != null and orderNo != '' ">and name = #{orderNo} </if>
+        <if test="merchantsId != null and merchantsId != '' ">and merchantsId = #{merchantsId} </if>
+        <if test="state != null and state != '' ">and state = #{state} </if>
+        <if test="payType != null and payType != '' ">and payType = #{payType} </if>
+        <if test="bankCode != null and bankCode != '' ">and bankCode = #{bankCode} </if>
+        <if test="name != null and name != '' ">and name = #{name} </if>
+        <if test="idCardNo != null and idCardNo != '' ">and idCardNo = #{idCardNo} </if>
+        <if test="cardNo != null and cardNo != '' ">and cardNo = #{cardNo} </if>
+        <if test="phone != null and phone != '' ">and phone = #{phone} </if>
+        <if test="startExecuteTime != null and startExecuteTime != '' ">and executeTime &gt; #{startExecuteTime}</if>
+        <if test="endExecuteTime != null and endExecuteTime != '' ">and executeTime &lt; #{endExecuteTime} </if>
+        <if test="startFinishTime != null and startFinishTime != '' ">and finishTime &gt; #{startFinishTime}</if>
+        <if test="endFinishTime != null and endFinishTime != '' ">and finishTime &lt; #{endFinishTime} </if>
+    </select>
+-->
+        <select id="gain" resultType="PlanDetail">
+        SELECT * from api_plan_detail_easy
+        where 1 = 1
+        <if test="orderNo != null and orderNo != '' ">and orderNo = #{orderNo} </if>
+        <if test="merchantId != null and merchantId != '' ">and merchantId = #{merchantId} </if>
+        <if test="name != null and name != '' ">and name = #{name} </if>
+        <if test="phone != null and phone != '' ">and phone = #{phone} </if>
+        <if test="agentId != null and agentId != '' ">and agentId = #{agentId} </if>
+        <if test="state != null and state != '' ">and state = #{state}</if>
+        <if test="payState != null and payState != '' ">and payState = #{payState}</if>
+        <if test="repaymentState != null and repaymentState != '' ">and repaymentState = #{repaymentState}</if>
+        <if test="executestartTime != null and executestartTime != '' ">and executeTime &gt; #{executestartTime} </if>
+        <if test="executefinishTime != null and executefinishTime != '' ">and executeTime &lt; #{executefinishTime} </if>
+        <if test="appId != null and appId != '' ">and appId = #{appId} </if>
+    </select> 
+    
+     <select id="get" resultType="Transactional">
+		SELECT *
+		FROM api_transactional_easy t,t_mp_merchants m 
+		<where>
+			t.merchantId = m.merChantId  
+			<if test="orderNo != '' and orderNo != null">
+				AND t.orderNo = #{orderNo}
+			</if>
+			<if test="orderMerchantId != '' and orderMerchantId != null">
+				AND t.orderMerchantId = #{orderMerchantId}
+			</if>
+			<if test="merchantId != '' and merchantId != null">
+				AND t.merchantId = #{merchantId}
+			</if>
+			<if test="type != '' and type != null">
+				AND t.type = #{type}
+			</if>
+			<if test="starttime != '' and starttime != null">
+				AND t.createTime &gt; #{starttime}
+			</if>
+			<if test="finishtime != '' and finishtime != null">
+				AND t.createTime &lt; #{finishtime}
+			</if>
+			<if test="appId != '' and appId != null">
+				AND m.appId = #{appId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="gets" resultType="Transactional">
+		SELECT *
+		FROM api_transactional_easy t left join t_mp_merchants on t.merchantId = t_mp_merchants.merChantId
+		<where>
+			t.agentId = #{agentId}
+			<if test="orderNo != '' and orderNo != null">
+				AND orderNo = #{orderNo}
+			</if>
+			<if test="orderMerchantId != '' and orderMerchantId != null">
+				AND orderMerchantId = #{orderMerchantId}
+			</if>
+			<if test="merchantId != '' and merchantId != null">
+				AND t.merchantId = #{merchantId}
+			</if>
+			<if test="type != '' and type != null">
+				AND type = #{type}
+			</if>
+			<if test="starttime != '' and starttime != null">
+				AND createTime &gt; #{starttime}
+			</if>
+			<if test="finishtime != '' and finishtime != null">
+				AND createTime &lt; #{finishtime}
+			</if>
+		</where>
+	</select>
+	
+	<select id="query" resultType="Transactional">
+		SELECT *
+		FROM api_transactional_easy t left join t_mp_merchants on t.merchantId = t_mp_merchants.merChantId
+		<where>
+			t.agentId in
+			<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+                 #{item}       
+      	  	</foreach>    
+			<if test="orderNo != '' and orderNo != null">
+				AND orderNo = #{orderNo}
+			</if>
+			<if test="orderMerchantId != '' and orderMerchantId != null">
+				AND orderMerchantId = #{orderMerchantId}
+			</if>
+			<if test="merchantId != '' and merchantId != null">
+				AND t.merchantId = #{merchantId}
+			</if>
+			<if test="type != '' and type != null">
+				AND type = #{type}
+			</if>
+			<if test="starttime != '' and starttime != null">
+				AND createTime &gt; #{starttime}
+			</if>
+			<if test="finishtime != '' and finishtime != null">
+				AND createTime &lt; #{finishtime}
+			</if>
+		</where>
+	</select>
+	
+	 <select id="getPlanDetaillist" resultType="PlanDetailEntity">
+        SELECT * from api_plan_detail_easy
+        where 1 = 1
+        <if test="merchantId != null and merchantId != '' ">and merchantId = #{merchantId} </if>
+        and payState = '3' and repaymentState != '3'  
+    </select> 
+</mapper>
