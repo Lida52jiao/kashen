@@ -16,87 +16,105 @@
 <div class="wrapper wrapper-content animated fadeInRight"
      style="height: 100%">
     <div class="ibox float-e-margins">
-        <div style="margin-left:26%">
+        <div >
             <p style="font-size:15px">当前余额:<span id="account" style="color:red;font-size:15px"></span>元</p>
+            <c:forEach items="${res}" var="key">
+                ${key.description}
+            </c:forEach>
         </div>
-            <form role="form" class="form-inline" id="userSearchNoCardCount">
-                <div class="input-group">
-                    <input type="text" placeholder="输入姓名" name="merName" id="merName"
-                           class="input form-control"> <span class="input-group-btn">
-					</span>
+        <form role="form" class="form-inline" id="userSearchNoCardCount">
+            <div class="input-group">
+                <input type="text" placeholder="输入姓名" name="merName" id="merName"
+                       class="input form-control"> <span class="input-group-btn">
+                </span>
+            </div>
+            <%--<div class="input-group">--%>
+                <%--<input type="text" placeholder="输入手机号" name="merMp" id="merMp"--%>
+                       <%--class="input form-control"> <span class="input-group-btn">--%>
+                <%--</span>--%>
+            <%--</div>--%>
+            <div class="input-group">
+                <input type="text" placeholder="输入订单号" name="orderNo" id="orderNo"
+                       class="input form-control"> <span class="input-group-btn">
+                </span>
+            </div>
+            <div class="input-group">
+                <input type="text" placeholder="输入代理商编号" name="agentId" id="agentId"
+                       class="input form-control"> <span class="input-group-btn">
+                </span>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-8">
+                    <input type="text" placeholder="交易开始时间" name="startTime" id="startTime" class="Wdate" onclick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd'})">
+                    <!-- validate="{required:true,messages:{required:'请填写角色名'}}"> -->
+                    <span class="help-block m-b-none"></span>
                 </div>
-                <%--<div class="input-group">--%>
-                    <%--<input type="text" placeholder="输入手机号" name="merMp" id="merMp"--%>
-                           <%--class="input form-control"> <span class="input-group-btn">--%>
-					<%--</span>--%>
-                <%--</div>--%>
-                <div class="input-group">
-                    <input type="text" placeholder="输入订单号" name="orderNo" id="orderNo"
-                           class="input form-control"> <span class="input-group-btn">
-					</span>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-8">
+                    <input type="text" placeholder="交易结束时间" name="finishTime" id="finishTime" class="Wdate" onclick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd'})">
+                    <!-- validate="{required:true,messages:{required:'请填写角色名'}}"> -->
+                    <span class="help-block m-b-none"></span>
                 </div>
-                <div class="input-group">
-                    <input type="text" placeholder="输入代理商编号" name="agentId" id="agentId"
-                           class="input form-control"> <span class="input-group-btn">
-					</span>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-8">
-                        <input type="text" placeholder="交易开始时间" name="startTime" id="startTime" class="Wdate" onclick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd'})">
-                        <!-- validate="{required:true,messages:{required:'请填写角色名'}}"> -->
-                        <span class="help-block m-b-none"></span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-8">
-                        <input type="text" placeholder="交易结束时间" name="finishTime" id="finishTime" class="Wdate" onclick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd'})">
-                        <!-- validate="{required:true,messages:{required:'请填写角色名'}}"> -->
-                        <span class="help-block m-b-none"></span>
-                    </div>
-                </div>
-                <div class="input-group">
-                <select name="appId" id="appId" class="input form-control" >
-                    <option value ="">请选择app  </option>
-                    <c:forEach items="${app}" var="key">
-                        <option value ="${key.appId}">${key.appName}  </option>
-                    </c:forEach>
+            </div>
+            <div class="input-group">
+            <select name="appId" id="appId" class="input form-control" >
+                <option value ="">请选择app  </option>
+                <c:forEach items="${app}" var="key">
+                    <option value ="${key.appId}">${key.appName}  </option>
+                </c:forEach>
+            </select>
+            <span class="input-group-btn"></span>
+            </div>
+            <div class="input-group">
+                <select name="type" id="type" class="input form-control" >
+                    <option value ="">请选择类型  </option>
+                    <option value ="dx">短信</option>
+                    <option value ="sys">银行卡鉴权</option>
+                    <option value ="kcp">卡测评</option>
                 </select>
                 <span class="input-group-btn">
-					</span>
-    </div>
-                <div class="input-group">
-                    <select name="type" id="type" class="input form-control" >
-                        <option value ="">请选择类型  </option>
-                        <option value ="dx">短信</option>
-                        <option value ="sys">银行卡鉴权</option>
-                        <option value ="kcp">卡测评</option>
-                    </select>
-                    <span class="input-group-btn">
-					</span>
-                </div>
-                <div class="input-group">
-                    <button type="button" class="btn btn btn-primary"
-                            onclick="javascript:agentSearchCountByArea();">
-                        <i class="fa fa-search"></i> 搜索
-                    </button>
-                    </span>
-                </div>
-            </form>
-            <div class="table-responsive">
-                <table id="cashCount" data-toolbar="#toolbar"
-                       data-show-refresh="true" data-show-toggle="true"
-                       data-show-columns="true" data-show-export="true"
-                       data-show-footer="false" data-mobile-responsive="true">
-                </table>
-                <p style="font-size:15px">消费汇总:<span id="amount" style="color:red;font-size:15px"></span>元</p>
+                </span>
             </div>
-
+            <div class="input-group">
+                <button type="button" class="btn btn btn-primary"
+                        onclick="javascript:agentSearchCountByArea();">
+                    <i class="fa fa-search"></i> 搜索
+                </button>
+                </span>
+            </div>
+        </form>
+        <div class="table-responsive">
+            <table id="cashCount" data-toolbar="#toolbar"
+                   data-show-refresh="true" data-show-toggle="true"
+                   data-show-columns="true" data-show-export="true"
+                   data-show-footer="false" data-mobile-responsive="true">
+            </table>
+            <p style="font-size:15px">消费汇总:<span id="amount" style="color:red;font-size:15px"></span>元</p>
+        </div>
     </div>
 </div>
-
-
 <script type="text/javascript">
-
+    //充值20190624zww
+    function payTotalBalance() {
+        battcn.ajaxOpen({
+            title : '账户充值',
+            href : rootPath + '/Account/payTotalBalance.shtml',
+            width : '40%',
+            height : '40%',
+            okhandler : function() {
+                save();
+            }
+        });
+    }
+    function queryPayRecord() {
+        battcn.ajaxOpen({
+            title : '充值记录',
+            href : rootPath + '/Account/queryPayRecord.shtml',
+            width : '40%',
+            height : '70%'
+        });
+    }
     //查询:目前只用一个参数,如果多个 请用 $("#A").val() !='' ||$("#B").val() !=''....
     function agentSearchCountByArea() {
         $('#cashCount').bootstrapTable('refresh');

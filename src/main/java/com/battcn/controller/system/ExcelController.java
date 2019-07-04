@@ -290,15 +290,18 @@ public class ExcelController  {
                          String appId,
                          String planId,
                          String aisleCode,
-                         String payType) throws UnsupportedEncodingException, ParseException {
+                         String payType,
+                         String cycleId) throws UnsupportedEncodingException, ParseException {
         UserEntity k = UserEntityUtil.getUserFromSession();
         name = new String(name.getBytes("iso8859-1"), "utf-8");
         Map<String, Object> map = new HashMap<String, Object>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
         if(k.getMerId().startsWith("T")){
             if(!StringUtils.isBlank(orderNo)){
                 map.put("orderNo", orderNo);
+            }
+            if(!StringUtils.isBlank(cycleId)){
+                map.put("cycleId", cycleId);
             }
             if(!StringUtils.isBlank(aisleCode)){
                 map.put("aisleCode", aisleCode);

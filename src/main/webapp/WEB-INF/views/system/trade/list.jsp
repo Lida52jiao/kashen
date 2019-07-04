@@ -39,6 +39,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						class="input form-control"> <span class="input-group-btn">
 					</span>
 				</div>
+				<div class="input-group">
+					<input type="text" placeholder="计划单元Id" name="cycleId" id="cycleId"
+						class="input form-control"> <span class="input-group-btn">
+					</span>
+				</div>
 				<!-- <div class="input-group">
 					<select name="payType" id="payType" class="input form-control">
 	  					<option value ="">请选择订单类型</option>
@@ -163,7 +168,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  					</select>
 					 <span class="input-group-btn">
 					</span>
-				</div> 
+				</div>
 				<div class="input-group">
 						<button type="button" class="btn btn btn-primary"
 							onclick="javascript:agentSearchtrade();">
@@ -373,6 +378,7 @@ function getState() {
 		var name = $("#name").val();
 		var phone = $("#phone").val();
 		var agentId = $("#agentId").val();
+		var cycleId = $("#cycleId").val();
 		var state = $("#states").val();
 		var payState = $("#paystate").val();
 		var repaymentState = $("#repaymentState").val();
@@ -395,6 +401,7 @@ function getState() {
 			name : name,
 			phone : phone,
 			agentId : agentId,
+            cycleId : cycleId,
 			state : state,
 			payState : payState,
 			repaymentState : repaymentState,
@@ -713,6 +720,11 @@ function getState() {
 			align : 'center',
 			valign : 'middle'
 		}, {
+			field : 'cycleId',
+			title : '计划单元Id',
+			align : 'center',
+			valign : 'middle'
+		},{
 			field : 'appId',
 			title : '所属app',
 			align : 'center',
@@ -778,6 +790,7 @@ function tradeExcel(){
     var name = $("#name").val();
     var phone = $("#phone").val();
     var agentId = $("#agentId").val();
+    var cycleId = $("#cycleId").val();
     var state = $("#states").val();
     var payState = $("#paystate").val();
     var repaymentState = $("#repaymentState").val();
@@ -786,7 +799,7 @@ function tradeExcel(){
     var appId = $("#appId").val();
     var aisleCode = $("#aisleCode").val();
     var payType = $("#payType").val();
-	window.location.href=rootPath + '/excel/tradeOut.shtml?orderNo='+orderNo+'&planId='+planId+'&merchantId='+merchantId+'&name='+name+'&phone='+phone+'&agentId='+agentId+'&state='+state+'&payState='+payState+'&repaymentState='+repaymentState+'&appId='+appId+'&aisleCode='+aisleCode+'&payType='+payType+'&executestartTime='+executestartTime+'&executefinishTime='+executefinishTime;
+	window.location.href=rootPath + '/excel/tradeOut.shtml?orderNo='+orderNo+'&planId='+planId+'&merchantId='+merchantId+'&name='+name+'&phone='+phone+'&agentId='+agentId+'&state='+state+'&payState='+payState+'&repaymentState='+repaymentState+'&appId='+appId+'&aisleCode='+aisleCode+'&payType='+payType+'&executestartTime='+executestartTime+'&executefinishTime='+executefinishTime+'&cycleId='+cycleId;
     // orderNo, merchantId, name, phone, agentId, state, payState, repaymentState, executestartTime, executefinishTime, appId, planId, isLd, aisleCode, payType
 
 }

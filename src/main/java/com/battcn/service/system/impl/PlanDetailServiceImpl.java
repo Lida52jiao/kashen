@@ -212,6 +212,7 @@ public class PlanDetailServiceImpl extends BaseServiceImpl<PlanDetailEntity> imp
 		String result=new HttpClientUtils().doPost(url+aisleCode+threeUrl,map);
 		JSONObject t = JSONObject.parseObject(result);
 		String message = t.getString("respDesc");
+		logger.info(message);
 		return message;
 	}
 	//补消费的ld01订单状态

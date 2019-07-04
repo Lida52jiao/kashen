@@ -29,6 +29,16 @@
                 </div>
                 <div class="col-sm-8">
                     <div class="input-group">
+                        <select name="module" id="module" class="input form-control" >
+                            <option value ="">请选择交易类型</option>
+                            <option value ="repayment">还款</option>
+                            <option value ="epos">无卡</option>
+                            <option value ="alipay">支付宝</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    <div class="input-group">
                         <select name="aisleCode" id="aisleCode" class="input form-control">
                             <option value="">请选择通道</option>
                             <option value="yb">银联多商户</option>
@@ -127,6 +137,7 @@
         var finishTime = $("#finishTime").val();
         var agentId = $("#agentId").val();
         var aisleCode = $("#aisleCode").val();
+        var module = $("#module").val();
         var pageSize = params.limit;
         var sort = params.sort;
         var offset = params.offset;
@@ -139,6 +150,7 @@
             order: order,
             agentId: agentId,
             aisleCode: aisleCode,
+            module: module,
             startTime: startTime,
             finishTime: finishTime
         }

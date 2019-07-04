@@ -110,7 +110,7 @@ public class StatisticsController {
 
     @RequestMapping("merCount")
     @ResponseBody
-    public PageInfo<PlanEntity> merCount(String aisleCode , String agentId , String startTime , String finishTime) throws ParseException {
+    public PageInfo<PlanEntity> merCount(String module, String aisleCode , String agentId , String startTime , String finishTime) throws ParseException {
         if(agentId.equals("")||agentId==null){
             return null;
         }
@@ -121,6 +121,9 @@ public class StatisticsController {
         Date today = new Date();
         map.put("merchantId",t.getMerChantId());
         map.put("aisleCode", aisleCode);
+        if(!"".equals(module)){
+            map.put("module", module);
+        }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         if(!"".equals(startTime)) {
             map.put("startTime", sdf.parse(startTime + " 00:00:00").getTime());

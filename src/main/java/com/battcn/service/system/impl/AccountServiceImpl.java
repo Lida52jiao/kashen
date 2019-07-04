@@ -34,10 +34,10 @@ public class AccountServiceImpl extends BaseServiceImpl<Record> implements Accou
     public String acount(Map<String, Object> map) {
         String url = "http://47.104.4.155:1172/account/getAccount";
         String result=new HttpClientUtils().doPost(url,map);
-       JSONObject job = JSONObject.parseObject(result);
+        JSONObject job = JSONObject.parseObject(result);
         String data = job.getString("data");
-       JSONObject jobs = JSONObject.parseObject(data);
-       String balance = jobs.getString("balance");
+        JSONObject jobs = JSONObject.parseObject(data);
+        String balance = jobs.getString("balance");
         return balance;
     }
 
@@ -63,6 +63,5 @@ public class AccountServiceImpl extends BaseServiceImpl<Record> implements Accou
         page.setPages(Integer.parseInt(t.getString("pages")));
         page.setTotal(Integer.parseInt(t.getString("total")));
         return page;
-
     }
 }

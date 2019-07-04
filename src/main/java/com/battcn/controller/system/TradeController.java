@@ -176,11 +176,15 @@ public class TradeController extends BaseController {
 											  String planId,
 											  String isLd,
 											  String aisleCode,
-											  String payType) throws UnsupportedEncodingException, ParseException {
+											  String payType,
+											  String cycleId) throws UnsupportedEncodingException, ParseException {
 		UserEntity k=UserEntityUtil.getUserFromSession();
 		name = new String(name.getBytes("iso8859-1"), "utf-8");
 		Map<String, Object> map = new HashMap<String, Object>();
 		SimpleDateFormat fmt= new SimpleDateFormat("yyyy-MM-dd");
+		if(!StringUtils.isBlank(cycleId)){
+			map.put("cycleId", cycleId);
+		}
 		//总平台查询所有
 			if(k.getMerId().startsWith("T")){
 				if(!StringUtils.isBlank(orderNo)){
