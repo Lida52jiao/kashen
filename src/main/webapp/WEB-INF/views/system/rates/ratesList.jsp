@@ -126,6 +126,12 @@
                 if(value == "ld16"){
                     return "小额落地C2";
                 }
+                if(value == "ld13"){
+                    return "落地小额D";
+                }
+                if(value == "ld17"){
+                    return "组合计划T";
+                }
 			}
 		}]
 	});

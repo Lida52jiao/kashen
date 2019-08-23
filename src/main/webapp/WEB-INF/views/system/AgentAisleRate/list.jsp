@@ -102,6 +102,12 @@
 								 <c:if test="${key.aislecode=='ld16'}">
 									 <option value ="${key.aislecode}">小额落地C2 </option>
 								 </c:if>
+								 <c:if test="${key.aislecode=='ld13'}">
+									 <option value ="${key.aislecode}">落地小额D </option>
+								 </c:if>
+								 <c:if test="${key.aislecode=='ld17'}">
+									 <option value ="${key.aislecode}">组合计划T </option>
+								 </c:if>
 							</c:forEach>
 	  				</select>
 					 <span class="input-group-btn">
@@ -291,6 +297,12 @@
                 }
                 if(value == "ld16"){
                     return "小额落地C2";
+                }
+                if(value == "ld13"){
+                    return "落地小额D";
+                }
+                if(value == "ld17"){
+                    return "组合计划T";
                 }
 			}
 		}, {

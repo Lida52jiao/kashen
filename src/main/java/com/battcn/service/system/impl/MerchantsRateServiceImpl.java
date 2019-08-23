@@ -70,6 +70,70 @@ public class MerchantsRateServiceImpl implements MerchantsRateService {
 	public Integer updateRate(MerChantsRate merchantsrate) {
 		UserEntity k=UserEntityUtil.getUserFromSession();
 		MerChantsRate merc =  merChantsRateMapper.selectByPrimaryKey(merchantsrate.getId());
+		//ld14 和ld17数据保存一致
+		if ("ld14".equals(merc.getAislecode()) || "ld17".equals(merc.getAislecode())) {
+			//添加修改记录
+			MerRateRecord record = new MerRateRecord();
+			record.setMertype(merc.getMertype());
+			record.setRate(merc.getRate());
+			record.setD0fee(merc.getD0fee());
+			record.setAislecode("ld14");
+			record.setAppid(merc.getAppid());
+			record.setUpdatedate(new Date());
+			record.setUpdatename(k.getUserName());
+			merRateRecordService.insertChangeRecord(record);
+			record.setAislecode("ld17");
+			merRateRecordService.insertChangeRecord(record);
+
+			//修改通道费率
+			BigDecimal bigDecimal = new BigDecimal("100");
+			BigDecimal big = new BigDecimal(merchantsrate.getRate().toString());
+			MerChantsRate m = new MerChantsRate();
+			if ("ld14".equals(merc.getAislecode())) {
+				m.setAislecode("ld17");
+			} else {
+				m.setAislecode("ld14");
+			}
+			m.setMertype(merchantsrate.getMertype());
+			m.setAppid(merc.getAppid());
+			m = merChantsRateMapper.selectByEntity(m);
+			m.setRate(big.divide(bigDecimal));
+			m.setD0fee(merchantsrate.getD0fee()*100);
+			Integer message = merChantsRateMapper.updateByPrimaryKey(m);
+
+			merc.setRate(big.divide(bigDecimal));
+			merc.setD0fee(merchantsrate.getD0fee()*100);
+			Integer message1 = merChantsRateMapper.updateByPrimaryKey(merc);
+			if (message == message1) {
+				if (message == 1) {
+					return 1;
+				}
+			}
+			return 0;
+		} else {
+			//添加修改记录
+			MerRateRecord record = new MerRateRecord();
+			record.setMertype(merc.getMertype());
+			record.setRate(merc.getRate());
+			record.setD0fee(merc.getD0fee());
+			record.setAislecode(merc.getAislecode());
+			record.setAppid(merc.getAppid());
+			record.setUpdatedate(new Date());
+			record.setUpdatename(k.getUserName());
+			merRateRecordService.insertChangeRecord(record);
+			//修改通道费率
+			BigDecimal bigDecimal = new BigDecimal("100");
+			BigDecimal big = new BigDecimal(merchantsrate.getRate().toString());
+			merc.setMertype(merc.getMertype());
+			merc.setRate(big.divide(bigDecimal));
+			merc.setD0fee(merchantsrate.getD0fee()*100);
+			merc.setAislecode(merc.getAislecode());
+			merc.setAppid(merc.getAppid());
+			Integer message = merChantsRateMapper.updateByPrimaryKey(merc);
+			return message;
+		}
+		/*UserEntity k=UserEntityUtil.getUserFromSession();
+		MerChantsRate merc =  merChantsRateMapper.selectByPrimaryKey(merchantsrate.getId());
 		//添加修改记录
 		MerRateRecord record = new MerRateRecord();
 		record.setMertype(merc.getMertype());
@@ -89,7 +153,7 @@ public class MerchantsRateServiceImpl implements MerchantsRateService {
 		merc.setAislecode(merc.getAislecode());
 		merc.setAppid(merc.getAppid());
 		Integer message = merChantsRateMapper.updateByPrimaryKey(merc);
-		return message;
+		return message;*/
 	}
 
 	@Override

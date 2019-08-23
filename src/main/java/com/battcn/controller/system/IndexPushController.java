@@ -90,7 +90,7 @@ public class IndexPushController extends BaseController {
                 return "f";
             }
         } else {
-            return "fail";
+//            return "fail";
         }
         String s = MD5Util.getMD5String(filePath);
         String ossKey = "indexPush/" + s;

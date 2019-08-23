@@ -49,31 +49,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     function getself() {
         return $.map($("#redPocketTable").bootstrapTable('getSelections'), function(
             row) {
-            return row.self/100
+            return row.self*100
         });
     }
     function searchoneMer() {
         return $.map($("#redPocketTable").bootstrapTable('getSelections'), function(
             row) {
-            return row.oneMer/100
+            return row.oneMer*100
         });
     }
     function searchtwoMer() {
         return $.map($("#redPocketTable").bootstrapTable('getSelections'), function(
             row) {
-            return row.twoMer/100
+            return row.twoMer*100
         });
     }
     function searchoneAgent() {
         return $.map($("#redPocketTable").bootstrapTable('getSelections'), function(
             row) {
-            return row.oneAgent/100
+            return row.oneAgent*100
         });
     }
     function searchtwoAgent() {
         return $.map($("#redPocketTable").bootstrapTable('getSelections'), function(
             row) {
-            return row.towAgent/100
+            return row.towAgent*100
         });
     }
     function searchwsName() {
@@ -158,50 +158,50 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             field : 'id',
             title : 'ID',
             visible: false
-        }, {
+        }, /*{
 			field : 'wsName',
 			title : '卡种',
 			align : 'center',
 			valign : 'middle'
-		}, {
+		},*/ {
 			field : 'self',
-			title : '申卡人返佣(元)',
+			title : '申卡人返佣(%)',
 			align : 'center',
 			valign : 'middle',
             formatter:function (value) {
-                return parseFloat((value/100)).toFixed(2);
+                return parseFloat((value*100));
             }
 		}, {
 			field : 'oneMer',
-			title : '直推人返佣(元)',
+			title : '直推人返佣(%)',
 			align : 'center',
 			valign : 'middle',
             formatter:function (value) {
-                return parseFloat((value/100)).toFixed(2);
+                return parseFloat((value*100));
             }
 		}, {
 			field : 'twoMer',
-			title : '间推人返佣(元)',
+			title : '间推人返佣(%)',
 			align : 'center',
 			valign : 'middle',
 			formatter:function (value) {
-				return parseFloat((value/100)).toFixed(2);
+				return parseFloat((value*100));
 			}
 		}, {
 			field : 'oneAgent',
-			title : '直接代理返佣(元)',
+			title : '直接代理返佣(%)',
 			align : 'center',
 			valign : 'middle',
 			formatter:function (value) {
-				return parseFloat((value/100)).toFixed(2);
+				return parseFloat((value*100));
 			}
 		}, {
 			field : 'towAgent',
-			title : '间接代理返佣(元)',
+			title : '间接代理返佣(%)',
 			align : 'center',
 			valign : 'middle',
             formatter:function (value) {
-                return parseFloat((value/100)).toFixed(2);
+                return parseFloat((value*100));
             }
 		}, {
 			field : 'createTime',

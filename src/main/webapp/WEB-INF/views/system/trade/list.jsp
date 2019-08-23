@@ -96,6 +96,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<c:if test="${key.aislecode=='ld16'}">
 										<option value ="${key.aislecode}">小额落地C2 </option>
 									</c:if>
+									<c:if test="${key.aislecode=='ld13'}">
+										<option value ="${key.aislecode}">落地小额D </option>
+									</c:if>
+									<c:if test="${key.aislecode=='ld17'}">
+										<option value ="${key.aislecode}">组合计划T </option>
+									</c:if>
 								</c:forEach>
 	  					</select>
 					 <span class="input-group-btn">
@@ -170,16 +176,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</span>
 				</div>
 				<div class="input-group">
+					<input type="text" placeholder="输入组合计划编号" name="groupId" id="groupId"
+						   class="input form-control"> <span class="input-group-btn">
+					</span>
+				</div>
+				<div class="input-group">
 						<button type="button" class="btn btn btn-primary"
 							onclick="javascript:agentSearchtrade();">
 							<i class="fa fa-search"></i> 搜索
 						</button>
 				</div>
-				<div class="input-group">
+				<%--<div class="input-group">
 					<button type="button" class="btn btn btn-primary"
 							onclick="javascript:tradeExcel();">
 						<i class="fa fa-search"></i> 导出
 					</button>
+				</div>--%>
+				<div class="input-group">
+					<input class="btn btn btn-primary" id="tradeExcel" type="button" value="导出">
 				</div>
 			</form>
 			<div class="table-responsive">
@@ -192,9 +206,42 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 	</div>
 </div>
-
-
 <script type="text/javascript">
+    $("#tradeExcel").click(function(){
+        $("#trade").tableExport({
+            headings: true,
+            footers: true,
+            formats: "csv",
+            fileName: "消费还款",
+            bootstrap: false,
+            position: "bottom",
+            ignoreRows: null,
+            ignoreCols: null,
+            ignoreColumn: [0]
+        });
+        /* Comma Separated Values (.csv) */
+        $.fn.tableExport.csv = {
+            defaultClass: "csv",
+            buttonContent: "Export to csv",
+            separator: ",",
+            mimeType: "application/csv",
+            fileExtension: ".csv"
+        };
+        /* default charset encoding (UTF-8) */
+        $.fn.tableExport.charset = "charset=utf-8";
+
+        /* default filename if "id" attribute is set and undefined */
+        $.fn.tableExport.defaultFileName = "myDownload";
+
+        /* default class to style buttons when not using bootstrap  */
+        $.fn.tableExport.defaultButton = "button-default";
+
+        /* bootstrap classes used to style and position the export buttons */
+        $.fn.tableExport.bootstrap = ["btn", "btn-default", "btn-toolbar"];
+
+        /* row delimeter used in all filetypes */
+        $.fn.tableExport.rowDel = "\r\n";
+    });
 function getPlanOrderNo() {
 	return $.map($("#trade").bootstrapTable('getSelections'), function(
 			row) {
@@ -231,6 +278,100 @@ function getState() {
 		return row.state
 	});
 }
+    function getPayType() {
+        return $.map($("#trade").bootstrapTable('getSelections'), function(
+            row) {
+            return row.payType
+        });
+    }
+    function getPlanType() {
+        return $.map($("#trade").bootstrapTable('getSelections'), function(
+            row) {
+            return row.planType
+        });
+    }
+    function getAnewOrderNo() {
+        return $.map($("#trade").bootstrapTable('getSelections'), function(
+            row) {
+            return row.anewOrderNo
+        });
+    }
+    function getRepaymentState() {
+        return $.map($("#trade").bootstrapTable('getSelections'), function(
+            row) {
+            return row.repaymentState
+        });
+    }
+    function getGroupId() {
+        return $.map($("#trade").bootstrapTable('getSelections'), function(
+            row) {
+            return row.groupId
+        });
+    }
+    function getCardNo() {
+        return $.map($("#trade").bootstrapTable('getSelections'), function(
+            row) {
+            return row.cardNo
+        });
+    }
+    function getAppId() {
+        return $.map($("#trade").bootstrapTable('getSelections'), function(
+            row) {
+            return row.appId
+        });
+    }
+    function getCycleId() {
+        return $.map($("#trade").bootstrapTable('getSelections'), function(
+            row) {
+            return row.cycleId
+        });
+    }
+    function updateUnit() {
+        var cbox = getPlanOrderNo();
+        var payType = getPayType();
+        var planType = getPlanType();
+        var anewOrderNo = getAnewOrderNo();
+        var state = getState();
+        var repaymentState = getRepaymentState();
+        var merchantId = getMerchantId();
+        var cycleId = getCycleId();
+        var cardNo = getCardNo();
+        var appId = getAppId();
+        console.info("cbox:"+cbox);
+        if (cbox == "") {
+            layer.msg("请选择数据！");
+            return;
+        }
+        if (cbox.length > 1) {
+            layer.msg("请选择一条数据！");
+            return;
+        }
+        if (planType != "multi_middle") {
+            layer.msg("请选择组合计划！");
+            return;
+        }
+        if (payType != "1") {
+            layer.msg("请选择还款订单！");
+            return;
+        }
+        if (anewOrderNo == null) {
+            layer.msg("请选择未进行补单订单！");
+            return;
+        }
+        if (state != "6" && repaymentState != "4") {
+            layer.msg("请选择还款失败订单！");
+            return;
+        }
+        battcn.ajaxOpen({
+            title : '组合计划补单元',
+            href : rootPath + '/Trade/repairUnit.shtml?cycleId='+cycleId+'&orderNo='+cbox+'&merchantId='+merchantId+'&cardNo='+cardNo+'&appId='+appId,
+            width : '40%',
+            height : '80%',
+            okhandler : function() {
+                save();
+            }
+        });
+    }
  function updatePlanState() {
  	var cbox = getPlanOrderNo();
  	var aisleCode = getAisleCode();
@@ -310,6 +451,12 @@ function getState() {
 	 	var aisle = aisleCode[0];
 	 	var cboxo = cbox[0];
 	 	var cboxt = cbox[1];
+		var data = new Date();
+	 	var hours = data.getHours();
+		if (hours > 20 || hours < 9) {
+			layer.msg("您好，晚上九点后，早上九点前不允许补消费！");
+			return;
+		}
 		if (cbox == "") {
 			layer.msg("请选择补消费的订单！！");
 			return;
@@ -386,6 +533,7 @@ function getState() {
 		var appId = $("#appId").val();
 		var aisleCode = $("#aisleCode").val();
 		var payType = $("#payType").val();
+		var groupId = $("#groupId").val();
 		var pageSize = params.limit;
 		var sort = params.sort;
 		var offset = params.offset;
@@ -410,7 +558,8 @@ function getState() {
 			isLd : isLd,
 			planId : planId,
 			aisleCode : aisleCode,
-			payType : payType
+			payType : payType,
+            groupId : groupId
 		}
 	} 
 	$('#trade').bootstrapTable({
@@ -497,6 +646,12 @@ function getState() {
                 }
                 if(value == "ld16"){
                     return "小额落地C2";
+                }
+                if(value == "ld13"){
+                    return "落地小额D";
+                }
+                if(value == "ld17"){
+                    return "组合计划T";
                 }
 			}
 		}, {
@@ -720,6 +875,27 @@ function getState() {
 			align : 'center',
 			valign : 'middle'
 		}, {
+			field : 'groupId',
+			title : '组合计划编号',
+			align : 'center',
+			valign : 'middle'
+        }, {
+			field : 'planType',
+			title : '订单类型',
+			align : 'center',
+			valign : 'middle',
+			formatter:function (value) {
+				if(value == "multi_firstAndLast"){
+					return "预留金计划";
+				}
+				if(value == "multi_middle"){
+					return "组合子计划";
+				}
+				if(value == "multi_clear"){
+					return "清算订单";
+				}
+			}
+		},{
 			field : 'cycleId',
 			title : '计划单元Id',
 			align : 'center',
@@ -783,7 +959,7 @@ function getState() {
         }
     }
     //消费还款导出
-function tradeExcel(){
+/*function tradeExcel(){
     var planId = $("#planId").val();
     var orderNo = $("#orderNo").val();
     var merchantId = $("#merchantId").val();
@@ -802,7 +978,7 @@ function tradeExcel(){
 	window.location.href=rootPath + '/excel/tradeOut.shtml?orderNo='+orderNo+'&planId='+planId+'&merchantId='+merchantId+'&name='+name+'&phone='+phone+'&agentId='+agentId+'&state='+state+'&payState='+payState+'&repaymentState='+repaymentState+'&appId='+appId+'&aisleCode='+aisleCode+'&payType='+payType+'&executestartTime='+executestartTime+'&executefinishTime='+executefinishTime+'&cycleId='+cycleId;
     // orderNo, merchantId, name, phone, agentId, state, payState, repaymentState, executestartTime, executefinishTime, appId, planId, isLd, aisleCode, payType
 
-}
+}*/
 
 
 </script>

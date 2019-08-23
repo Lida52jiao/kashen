@@ -89,11 +89,12 @@ public class RatesController extends BaseController{
 	@ResponseBody
 	public List<Rate> qwer(String agentid) {
 		Rate r = new Rate();
-		r.setAislecode("ld07");
+		r.setAislecode("ld14");
 		List<Rate> page = ratesdelService.queryObjectForList(r);
+		System.err.println("=======================>>>"+page.size()+"<<<==========================");
 		for(Rate a : page){
 			Rate s = new Rate();
-			s.setAislecode("ld12");
+			s.setAislecode("ld17");
 			s.setAgentid(a.getAgentid());
 			s.setD0fee(a.getD0fee());
 			s.setMerchantid(a.getMerchantid());

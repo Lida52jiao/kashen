@@ -25,19 +25,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</c:if>
 				<div class="input-group">
 					<select name="aislecode" id="aislecode" class="input form-control" >
-							<option value ="">请选择通道  </option>
-			                <option value ="ld01">落地通道L</option>
-			                <option value ="ld02">落地通道Y</option>
-			                <option value ="ld04">落地还款X</option>
-			                <option value ="ld05">落地还款T</option>
-			                <option value ="ld06">大额还款K</option>
-							<option value ="ld07">落地大额H</option>
-                            <option value ="ld09">落地还款C</option>
-							<option value ="ld11">落地还款NT</option>
-							<option value ="ld12">落地大额C</option>
-							<option value ="ld14">小额落地HB</option>
+						<option value ="">请选择通道  </option>
+						<option value ="ld01">落地通道L</option>
+						<option value ="ld02">落地通道Y</option>
+						<option value ="ld04">落地还款X</option>
+						<option value ="ld05">落地还款T</option>
+						<option value ="ld06">大额还款K</option>
+						<option value ="ld07">落地大额H</option>
+						<option value ="ld09">落地还款C</option>
+						<option value ="ld11">落地还款NT</option>
+						<option value ="ld12">落地大额C</option>
+						<option value ="ld14">小额落地HB</option>
 						<option value ="ld15">落地大额C2</option>
 						<option value ="ld16">小额落地C2</option>
+						<option value ="ld13">落地小额D</option>
+						<option value ="ld17">组合计划T</option>
 		  			</select>
 	  			</div>
 				<div class="input-group">

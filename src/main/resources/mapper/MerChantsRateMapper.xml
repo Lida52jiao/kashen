@@ -307,4 +307,20 @@
     group by aislecode;
     
   </select>
+  <select id="selectByEntity" parameterType="com.battcn.entity.MerChantsRate" resultMap="BaseResultMap">
+    select
+    *
+    from
+    t_mp_merchantsrate
+    where 1=1
+    <if test="mertype != null and mertype != '' ">
+      and merType = #{mertype, jdbcType=VARCHAR}
+    </if>
+    <if test="aislecode != null and aislecode != '' ">
+      and aisleCode = #{aislecode, jdbcType=VARCHAR}
+    </if>
+    <if test="appid != null and appid != '' ">
+      and appId = #{appid, jdbcType=VARCHAR}
+    </if>
+  </select>
 </mapper>

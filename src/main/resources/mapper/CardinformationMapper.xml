@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.battcn.mapper.CardinformationMapper">
+  <resultMap id="BaseResultMap" type="com.battcn.entity.Cardinformation">
+    <id column="cardId" jdbcType="BIGINT" property="cardid" />
+    <result column="merChantId" jdbcType="VARCHAR" property="merchantid" />
+    <result column="cardType" jdbcType="VARCHAR" property="cardtype" />
+    <result column="cardNumber" jdbcType="VARCHAR" property="cardnumber" />
+    <result column="merMp" jdbcType="VARCHAR" property="mermp" />
+    <result column="issuingBank" jdbcType="VARCHAR" property="issuingbank" />
+    <result column="statementDate" jdbcType="VARCHAR" property="statementdate" />
+    <result column="repaymentDate" jdbcType="VARCHAR" property="repaymentdate" />
+    <result column="cv2" jdbcType="VARCHAR" property="cv2" />
+    <result column="effectiveYear" jdbcType="VARCHAR" property="effectiveyear" />
+    <result column="effectiveMonth" jdbcType="VARCHAR" property="effectivemonth" />
+    <result column="sign" jdbcType="VARCHAR" property="sign" />
+    <result column="cardDefault" jdbcType="VARCHAR" property="carddefault" />
+    <result column="creatDate" jdbcType="VARCHAR" property="creatdate" />
+    <result column="bindId" jdbcType="VARCHAR" property="bindid" />
+    <result column="agentId" jdbcType="VARCHAR" property="agentid" />
+    <result column="institutionId" jdbcType="VARCHAR" property="institutionid" />
+    <result column="appId" jdbcType="VARCHAR" property="appid" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    cardId, merChantId, cardType, cardNumber, merMp, issuingBank, statementDate, repaymentDate, 
+    cv2, effectiveYear, effectiveMonth, sign, cardDefault, creatDate, bindId, agentId, 
+    institutionId, appId, remarks
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_mp_cardinformation
+    where cardId = #{cardid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_mp_cardinformation
+    where cardId = #{cardid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.battcn.entity.Cardinformation">
+    insert into t_mp_cardinformation (cardId, merChantId, cardType, 
+      cardNumber, merMp, issuingBank, 
+      statementDate, repaymentDate, cv2, 
+      effectiveYear, effectiveMonth, sign, 
+      cardDefault, creatDate, bindId, 
+      agentId, institutionId, appId, 
+      remarks)
+    values (#{cardid,jdbcType=BIGINT}, #{merchantid,jdbcType=VARCHAR}, #{cardtype,jdbcType=VARCHAR}, 
+      #{cardnumber,jdbcType=VARCHAR}, #{mermp,jdbcType=VARCHAR}, #{issuingbank,jdbcType=VARCHAR}, 
+      #{statementdate,jdbcType=VARCHAR}, #{repaymentdate,jdbcType=VARCHAR}, #{cv2,jdbcType=VARCHAR}, 
+      #{effectiveyear,jdbcType=VARCHAR}, #{effectivemonth,jdbcType=VARCHAR}, #{sign,jdbcType=VARCHAR}, 
+      #{carddefault,jdbcType=VARCHAR}, #{creatdate,jdbcType=VARCHAR}, #{bindid,jdbcType=VARCHAR}, 
+      #{agentid,jdbcType=VARCHAR}, #{institutionid,jdbcType=VARCHAR}, #{appid,jdbcType=VARCHAR}, 
+      #{remarks,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.battcn.entity.Cardinformation">
+    insert into t_mp_cardinformation
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cardid != null">
+        cardId,
+      </if>
+      <if test="merchantid != null">
+        merChantId,
+      </if>
+      <if test="cardtype != null">
+        cardType,
+      </if>
+      <if test="cardnumber != null">
+        cardNumber,
+      </if>
+      <if test="mermp != null">
+        merMp,
+      </if>
+      <if test="issuingbank != null">
+        issuingBank,
+      </if>
+      <if test="statementdate != null">
+        statementDate,
+      </if>
+      <if test="repaymentdate != null">
+        repaymentDate,
+      </if>
+      <if test="cv2 != null">
+        cv2,
+      </if>
+      <if test="effectiveyear != null">
+        effectiveYear,
+      </if>
+      <if test="effectivemonth != null">
+        effectiveMonth,
+      </if>
+      <if test="sign != null">
+        sign,
+      </if>
+      <if test="carddefault != null">
+        cardDefault,
+      </if>
+      <if test="creatdate != null">
+        creatDate,
+      </if>
+      <if test="bindid != null">
+        bindId,
+      </if>
+      <if test="agentid != null">
+        agentId,
+      </if>
+      <if test="institutionid != null">
+        institutionId,
+      </if>
+      <if test="appid != null">
+        appId,
+      </if>
+      <if test="remarks != null">
+        remarks,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cardid != null">
+        #{cardid,jdbcType=BIGINT},
+      </if>
+      <if test="merchantid != null">
+        #{merchantid,jdbcType=VARCHAR},
+      </if>
+      <if test="cardtype != null">
+        #{cardtype,jdbcType=VARCHAR},
+      </if>
+      <if test="cardnumber != null">
+        #{cardnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="mermp != null">
+        #{mermp,jdbcType=VARCHAR},
+      </if>
+      <if test="issuingbank != null">
+        #{issuingbank,jdbcType=VARCHAR},
+      </if>
+      <if test="statementdate != null">
+        #{statementdate,jdbcType=VARCHAR},
+      </if>
+      <if test="repaymentdate != null">
+        #{repaymentdate,jdbcType=VARCHAR},
+      </if>
+      <if test="cv2 != null">
+        #{cv2,jdbcType=VARCHAR},
+      </if>
+      <if test="effectiveyear != null">
+        #{effectiveyear,jdbcType=VARCHAR},
+      </if>
+      <if test="effectivemonth != null">
+        #{effectivemonth,jdbcType=VARCHAR},
+      </if>
+      <if test="sign != null">
+        #{sign,jdbcType=VARCHAR},
+      </if>
+      <if test="carddefault != null">
+        #{carddefault,jdbcType=VARCHAR},
+      </if>
+      <if test="creatdate != null">
+        #{creatdate,jdbcType=VARCHAR},
+      </if>
+      <if test="bindid != null">
+        #{bindid,jdbcType=VARCHAR},
+      </if>
+      <if test="agentid != null">
+        #{agentid,jdbcType=VARCHAR},
+      </if>
+      <if test="institutionid != null">
+        #{institutionid,jdbcType=VARCHAR},
+      </if>
+      <if test="appid != null">
+        #{appid,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.battcn.entity.Cardinformation">
+    update t_mp_cardinformation
+    <set>
+      <if test="merchantid != null">
+        merChantId = #{merchantid,jdbcType=VARCHAR},
+      </if>
+      <if test="cardtype != null">
+        cardType = #{cardtype,jdbcType=VARCHAR},
+      </if>
+      <if test="cardnumber != null">
+        cardNumber = #{cardnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="mermp != null">
+        merMp = #{mermp,jdbcType=VARCHAR},
+      </if>
+      <if test="issuingbank != null">
+        issuingBank = #{issuingbank,jdbcType=VARCHAR},
+      </if>
+      <if test="statementdate != null">
+        statementDate = #{statementdate,jdbcType=VARCHAR},
+      </if>
+      <if test="repaymentdate != null">
+        repaymentDate = #{repaymentdate,jdbcType=VARCHAR},
+      </if>
+      <if test="cv2 != null">
+        cv2 = #{cv2,jdbcType=VARCHAR},
+      </if>
+      <if test="effectiveyear != null">
+        effectiveYear = #{effectiveyear,jdbcType=VARCHAR},
+      </if>
+      <if test="effectivemonth != null">
+        effectiveMonth = #{effectivemonth,jdbcType=VARCHAR},
+      </if>
+      <if test="sign != null">
+        sign = #{sign,jdbcType=VARCHAR},
+      </if>
+      <if test="carddefault != null">
+        cardDefault = #{carddefault,jdbcType=VARCHAR},
+      </if>
+      <if test="creatdate != null">
+        creatDate = #{creatdate,jdbcType=VARCHAR},
+      </if>
+      <if test="bindid != null">
+        bindId = #{bindid,jdbcType=VARCHAR},
+      </if>
+      <if test="agentid != null">
+        agentId = #{agentid,jdbcType=VARCHAR},
+      </if>
+      <if test="institutionid != null">
+        institutionId = #{institutionid,jdbcType=VARCHAR},
+      </if>
+      <if test="appid != null">
+        appId = #{appid,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where cardId = #{cardid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.battcn.entity.Cardinformation">
+    update t_mp_cardinformation
+    set merChantId = #{merchantid,jdbcType=VARCHAR},
+      cardType = #{cardtype,jdbcType=VARCHAR},
+      cardNumber = #{cardnumber,jdbcType=VARCHAR},
+      merMp = #{mermp,jdbcType=VARCHAR},
+      issuingBank = #{issuingbank,jdbcType=VARCHAR},
+      statementDate = #{statementdate,jdbcType=VARCHAR},
+      repaymentDate = #{repaymentdate,jdbcType=VARCHAR},
+      cv2 = #{cv2,jdbcType=VARCHAR},
+      effectiveYear = #{effectiveyear,jdbcType=VARCHAR},
+      effectiveMonth = #{effectivemonth,jdbcType=VARCHAR},
+      sign = #{sign,jdbcType=VARCHAR},
+      cardDefault = #{carddefault,jdbcType=VARCHAR},
+      creatDate = #{creatdate,jdbcType=VARCHAR},
+      bindId = #{bindid,jdbcType=VARCHAR},
+      agentId = #{agentid,jdbcType=VARCHAR},
+      institutionId = #{institutionid,jdbcType=VARCHAR},
+      appId = #{appid,jdbcType=VARCHAR},
+      remarks = #{remarks,jdbcType=VARCHAR}
+    where cardId = #{cardid,jdbcType=BIGINT}
+  </update>
+
+  <select id="queryCardInfoByCardNo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_mp_cardinformation
+    where cardNumber = #{cardNo}
+    and appId = #{appId}
+  </select>
+</mapper>

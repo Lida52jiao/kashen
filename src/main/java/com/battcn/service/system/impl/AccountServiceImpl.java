@@ -53,7 +53,7 @@ public class AccountServiceImpl extends BaseServiceImpl<Record> implements Accou
         map.put("pageSize", pageSize.toString());
         map.put("sort", orderField);
         map.put("order",orderDirection);
-        String url = "http://47.104.4.155:1172/record/select";
+        String url = "http://47.104.4.155:1172/record/selects";
         String result=new HttpClientUtils().doPost(url,map);
         JSONObject t = JSONObject.parseObject(result);
         List<Record> list = JSON.parseArray(t.getString("list"),Record.class);

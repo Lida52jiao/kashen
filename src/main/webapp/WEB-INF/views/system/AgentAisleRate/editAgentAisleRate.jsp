@@ -127,6 +127,9 @@ if(aislecode == "ld15"){
 if(aislecode == "kft"){
 	$("#aislecodeName").val("大额快捷K");
 }
+if(aislecode == "ld17"){
+    $("#aislecodeName").val("组合计划T");
+}
 $("#rate").val(parseFloat(${MerchantsRate.rate*100}).toFixed(3));
 $("#d0fee").val(${MerchantsRate.d0fee/100});
 </script>

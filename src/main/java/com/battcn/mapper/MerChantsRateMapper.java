@@ -95,4 +95,6 @@ public interface MerChantsRateMapper {
     int updateByPrimaryKey(MerChantsRate record);
     
     List<MerChantsRate> selectByAisle();
+
+    MerChantsRate selectByEntity(MerChantsRate merChantsRate);
 }

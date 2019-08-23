@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.battcn.entity.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,11 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.battcn.annotation.SystemLog;
 import com.battcn.constant.InstitutionIdNumber;
 import com.battcn.controller.BaseController;
-import com.battcn.entity.Agent;
-import com.battcn.entity.AppName;
-import com.battcn.entity.PlanDetailEntity;
-import com.battcn.entity.PlanEntity;
-import com.battcn.entity.UserEntity;
 import com.battcn.service.system.AgentService;
 import com.battcn.service.system.AppNameService;
 import com.battcn.service.system.IsLdRateService;
@@ -59,7 +55,7 @@ public class PlanController extends BaseController {
 	@ResponseBody
 	public PageInfo<PlanEntity> findPlanByAll(String pId,String merchantId,String phone,String cardNo,
 											  String state,String starttime,String finishtime,String appId,String agentId,
-											  String isLd,String aisleCode) throws UnsupportedEncodingException, ParseException{
+											  String isLd,String aisleCode,String groupId) throws UnsupportedEncodingException, ParseException{
 		UserEntity k=UserEntityUtil.getUserFromSession();
 		Map<String, Object> map = new HashMap<String, Object>();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -99,6 +95,9 @@ public class PlanController extends BaseController {
 			}
 			if(!StringUtils.isBlank(agentId)){
 				map.put("agentId", agentId);
+			}
+			if(!StringUtils.isBlank(groupId)){
+				map.put("groupId", groupId);
 			}
 			if(startSeconds !=0){
 				map.put("startTime", String.valueOf(startSeconds));
@@ -142,6 +141,9 @@ public class PlanController extends BaseController {
 			if(!StringUtils.isBlank(agentId)){
 				map.put("agentId", agentId);
 			}
+			if(!StringUtils.isBlank(groupId)){
+				map.put("groupId", groupId);
+			}
 			map.put("appId", appNames.getAppId());
 			if(startSeconds !=0){
 				map.put("startTime", String.valueOf(startSeconds));
@@ -181,6 +183,9 @@ public class PlanController extends BaseController {
 		map.put("agentId", k.getMerId());
 		if(!StringUtils.isBlank(agentId)){
 			map.put("agentId", agentId);
+		}
+		if(!StringUtils.isBlank(groupId)){
+			map.put("groupId", groupId);
 		}
 		if(startSeconds !=0){
 			map.put("startTime", String.valueOf(startSeconds));
@@ -275,6 +280,38 @@ public class PlanController extends BaseController {
     	PlanDetailEntity planDetail = planDetailService.findByPrimaryKey(id);
     	//System.out.println(planService.get(planDetail.getMerchantId(), planDetail.getOrderNo()));
     	return planService.get(planDetail.getMerchantId(), planDetail.getOrderNo());
+	}
+	@RequestMapping("interruptPlanList")
+	@SystemLog(module = "还款计划", methods = "组合计划中断查询")
+	public String interruptPlanList(Model model) {
+		model.addAttribute("aisleCode",isLdRateService.getaisleGroup());
+		model.addAttribute("res", findResByUser());
+		model.addAttribute("app", appNameService.getList());
+		return "/system/plan/interruptPlanList";
+	}
+
+	@RequestMapping("queryInterruptPlanList")
+	@ResponseBody
+	public PageInfo<PlanGroup> queryInterruptPlanList(String groupId, String state, String merchantId){
+		Map<String, Object> map = new HashMap<String, Object>();
+		UserEntity k=UserEntityUtil.getUserFromSession();
+		map.put("institutionId", k.getMerId());
+		if(!StringUtils.isBlank(groupId)){
+			map.put("groupId", groupId);
+		}
+		if(!StringUtils.isBlank(state)){
+			map.put("state", state);
+		}
+		if(!StringUtils.isBlank(merchantId)){
+			map.put("merchantId", merchantId);
+		}
+		PageInfo<PlanGroup> page = planService.queryInterruptPlanList(map);
+		return page;
+	}
+	@RequestMapping("/clearPlan")
+	@ResponseBody
+	public String clearPlan(String groupId){
+		return planService.clearPlan(groupId);
 	}
 
 }

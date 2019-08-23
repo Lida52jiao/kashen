@@ -42,7 +42,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  					<option value ="epos">无卡 </option>
 	  					<option value ="repayment">还款 </option>
 	  					<option value ="alipay">升级费</option>
-	  					</select>
+	  					<option value ="ws">网申</option>
+	  				</select>
 					 <span class="input-group-btn">
 					</span>
 				</div>
@@ -258,16 +259,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			valign : 'middle',
 			formatter:function (value) {
 				if(value == "alipay"){
-						return '升级费';
-					}
-					if(value == "epos"){
-						return '无卡';
-					}
-					if(value == "repayment"){
-						return '还款';
-					}else {
-						return "原始数据无从考证";
-					}
+					return '升级费';
+				}
+				if(value == "epos"){
+					return '无卡';
+				}
+				if(value == "repayment"){
+					return '还款';
+				}
+				if(value == "ws"){
+					return '网申';
+				} else {
+					return "原始数据无从考证";
+				}
 			}
 		}, {
 			field : 'amount',

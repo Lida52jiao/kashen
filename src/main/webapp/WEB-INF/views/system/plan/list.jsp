@@ -80,6 +80,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<c:if test="${key.aislecode=='ld16'}">
 										<option value ="${key.aislecode}">小额落地C2 </option>
 									</c:if>
+									<c:if test="${key.aislecode=='ld13'}">
+										<option value ="${key.aislecode}">落地小额D </option>
+									</c:if>
+									<c:if test="${key.aislecode=='ld17'}">
+										<option value ="${key.aislecode}">组合计划T </option>
+									</c:if>
 								</c:forEach>
 	  					</select>
 					 <span class="input-group-btn">
@@ -123,16 +129,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div class="col-sm-8">
 					<input type="text" placeholder="计划执行时间" name="starttime" id="starttimes" class="Wdate" onclick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm:ss'})">
 						<!-- validate="{required:true,messages:{required:'请填写角色名'}}"> -->
-						<span class="help-block m-b-none">
+                    <span class="help-block m-b-none"></span>
 				</div>
 			</div>
 			<div class="form-group">
 				<div class="col-sm-8">
 					<input type="text" placeholder="计划执行时间" name="finishtime" id="finishtimes" class="Wdate" onclick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm:ss'})">
 						<!-- validate="{required:true,messages:{required:'请填写角色名'}}"> -->
-						<span class="help-block m-b-none">
+                    <span class="help-block m-b-none"></span>
 				</div>
 			</div>
+                <div class="form-group">
+                    <input type="text" placeholder="输入组合计划编号" id="groupId" name="groupId" class="input form-control"/><span class="input-group-btn">
+				</span>
+                </div>
 				<div class="input-group">
 						<button type="button" class="btn btn btn-primary"
 							onclick="javascript:agentSearchplan();">
@@ -202,6 +212,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		var starttime = $("#starttimes").val();
 		var finishtime = $("#finishtimes").val();
 		var aisleCode = $("#aisleCode").val();
+		var groupId = $("#groupId").val();
 		var pageSize = params.limit;
 		var sort = params.sort;
 		var offset = params.offset;
@@ -222,7 +233,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			starttime : starttime,
 			finishtime : finishtime,
 			isLd : isLd,
-			aisleCode : aisleCode
+			aisleCode : aisleCode,
+            groupId : groupId
 		}
 	} 
 	$('#plan').bootstrapTable({
@@ -253,6 +265,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			align : 'center',
 			valign : 'middle'
 		}, {
+            field : 'groupId',
+            title : '组合计划编号',
+            align : 'center',
+            valign : 'middle'
+        },{
+            field : 'planType',
+            title : '订单类型',
+            align : 'center',
+            valign : 'middle',
+            formatter:function (value) {
+                if(value == "multi_firstAndLast"){
+                    return "预留金计划";
+                }
+                if(value == "multi_middle"){
+                    return "组合子计划";
+                }
+                if(value == "multi_clear"){
+                    return "清算订单";
+                }
+            }
+        },{
 			field : 'merchantId',
 			title : '商户号',
 			align : 'center',
@@ -314,6 +347,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 }
                 if(value == "ld16"){
                     return "小额落地C2";
+                }
+                if(value == "ld13"){
+                    return "落地小额D";
+                }
+                if(value == "ld17"){
+                    return "组合计划T";
                 }
 			}
 		},{

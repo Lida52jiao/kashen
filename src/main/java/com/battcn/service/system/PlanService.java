@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.battcn.entity.PlanEntity;
+import com.battcn.entity.PlanGroup;
 import com.battcn.service.BaseService;
 import com.github.pagehelper.PageInfo;
 
@@ -30,4 +31,8 @@ public interface PlanService extends BaseService<PlanEntity>{
 	String get(String merchantId, String orderNo);
 	
 	PageInfo<PlanEntity> selectPlan(Map<String, Object> map);
+
+	PageInfo<PlanGroup> queryInterruptPlanList(Map<String, Object> map);
+
+	String clearPlan(String groupId);
 }

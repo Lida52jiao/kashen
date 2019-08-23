@@ -166,7 +166,7 @@
             type : type,
             agentId : agentId,
             startTime : startTime,
-            finishTime : finishTime,
+            finshTime : finishTime,
             appId : appId
         }
     }

@@ -14,6 +14,10 @@ public class PlanDetailEntity implements java.io.Serializable{
     private String orderNo;//单号
     @Column(name = "planId")
     private Long planId;//计划ID
+    @Column(name = "groupId")
+    private String groupId;//组合计划ID
+    @Column(name = "planType")
+    private String planType;//计划类型
     @Column(name = "state")
     private String state;//发起状态
     @Column(name = "payState")
@@ -112,6 +116,22 @@ public class PlanDetailEntity implements java.io.Serializable{
 
     @Column(name = "remarks")
     private String remarks;
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+
+    public String getPlanType() {
+        return planType;
+    }
+
+    public void setPlanType(String planType) {
+        this.planType = planType;
+    }
 
     public String getOrderNo() {
         return orderNo;

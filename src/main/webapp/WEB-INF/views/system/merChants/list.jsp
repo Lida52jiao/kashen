@@ -480,6 +480,11 @@
 			title : 'app名称',
 			align : 'center',
 			valign : 'middle'
+		}, {
+			field : 'remarks',
+			title : '上次登陆时间',
+			align : 'center',
+			valign : 'middle'
 		}]
 	});
         //转换日期格式(时间戳转换为datetime格式)

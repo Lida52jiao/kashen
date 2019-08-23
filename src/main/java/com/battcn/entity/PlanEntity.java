@@ -12,6 +12,10 @@ public class PlanEntity implements java.io.Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pId", unique = true, nullable = false)
     private Long pId;
+    @Column(name = "groupId")
+    private String groupId;//组合计划ID
+    @Column(name = "planType")
+    private String planType;//计划类型
     @Column(name = "createTime")
     private String createTime;
     @Column(name = "startTime")
@@ -91,6 +95,22 @@ public class PlanEntity implements java.io.Serializable{
     private String cardNumber;
     @Column(name = "remarks")
     private String remarks;
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+
+    public String getPlanType() {
+        return planType;
+    }
+
+    public void setPlanType(String planType) {
+        this.planType = planType;
+    }
 
     public String getIsLd() {
         return isLd;

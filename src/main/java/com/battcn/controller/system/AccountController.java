@@ -28,7 +28,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("Account")
-public class accountController extends BaseController {
+public class AccountController extends BaseController {
 
     @Autowired
     private AccountService accountService;
@@ -77,13 +77,15 @@ public class accountController extends BaseController {
                                  String agentId,
                                  String orderNo,
                                  String appId,
-                                 String type) throws UnsupportedEncodingException {
+                                 String type,
+                                 String startTime,
+                                 String finshTime) throws UnsupportedEncodingException, ParseException {
         Map<String, Object> map = new HashMap<String, Object>();
         if (!"".equals(merchantId)) {
             map.put("merchantId", merchantId);
         }
         if(!"".equals(merName)){
-            merName = new String(merName.getBytes("iso8859-1"), "utf-8");
+//            merName = new String(merName.getBytes("iso8859-1"), "utf-8");
             map.put("merName", merName);
         }
         if(!"".equals(agentId)){
@@ -98,8 +100,18 @@ public class accountController extends BaseController {
         if(!"".equals(type)){
             map.put("type", type);
         }
-            map.put("institutionId", InstitutionIdNumber.AGENT);
-
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        long startSeconds = 0;
+        long finishSeconds = 0;
+        if(!"".endsWith(startTime)){
+            startSeconds = sdf.parse(startTime+" 00:00:00").getTime();//毫秒
+            map.put("startTime", startSeconds);
+        }
+        if(!"".endsWith(finshTime)){
+            finishSeconds = sdf.parse(finshTime+" 23:59:59").getTime();//毫秒
+            map.put("finshTime", finishSeconds);
+        }
+        map.put("institutionId", InstitutionIdNumber.AGENT);
         return accountService.find(map);
     }
 

@@ -52,7 +52,9 @@ public class TradeController extends BaseController {
 	private IsLdRateService isLdRateService;
 	@Autowired
 	private MerChantsService merChantsService;
-	
+	@Autowired
+	private CardinformationService cardinformationService;
+
 	@RequestMapping("list")
 	@SystemLog(module = "交易及结算管理", methods = "充值及还款查询")
 	public String list(Model model) {
@@ -177,7 +179,8 @@ public class TradeController extends BaseController {
 											  String isLd,
 											  String aisleCode,
 											  String payType,
-											  String cycleId) throws UnsupportedEncodingException, ParseException {
+											  String cycleId,
+											  String groupId) throws UnsupportedEncodingException, ParseException {
 		UserEntity k=UserEntityUtil.getUserFromSession();
 		name = new String(name.getBytes("iso8859-1"), "utf-8");
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -225,6 +228,9 @@ public class TradeController extends BaseController {
 				}
 				if(!StringUtils.isBlank(agentId)){
 					map.put("agentId", agentId);
+				}
+				if(!StringUtils.isBlank(groupId)){
+					map.put("groupId", groupId);
 				}
 				if(!StringUtils.isBlank(executestartTime)){
 					map.put("executeDateStr", executestartTime);
@@ -274,6 +280,9 @@ public class TradeController extends BaseController {
 				if(!StringUtils.isBlank(agentId)){
 					map.put("agentId", agentId);
 				}
+				if(!StringUtils.isBlank(groupId)){
+					map.put("groupId", groupId);
+				}
 				if(!StringUtils.isBlank(executestartTime)){
 					map.put("executeDateStr", executestartTime);
 				}
@@ -312,12 +321,15 @@ public class TradeController extends BaseController {
 			if(!StringUtils.isBlank(payState)){
 				map.put("payState", payState);
 			}
+			if(!StringUtils.isBlank(groupId)){
+				map.put("groupId", groupId);
+			}
 			if(!StringUtils.isBlank(repaymentState)){
 				map.put("repaymentState", repaymentState);
 			}
-		if(!StringUtils.isBlank(executestartTime)){
-			map.put("executeDateStr", executestartTime);
-		}
+			if(!StringUtils.isBlank(executestartTime)){
+				map.put("executeDateStr", executestartTime);
+			}
 			map.put("agentId", k.getMerId());
 			map.put("institutionId", InstitutionIdNumber.AGENT);
 			return planDetailService.selectPlanDetail(map);
@@ -616,6 +628,31 @@ public class TradeController extends BaseController {
 		map.put("commodityId", commodityId);
 		String message = tradeService.deletestores(map);
 		return message;
+	}
+	@RequestMapping("/repairUnit")
+	public String repairUnit(Model model, String cycleId, String orderNo, String merchantId, String cardNo, String appId){
+		model.addAttribute("cycleId",cycleId);
+		model.addAttribute("orderNo",orderNo);
+		model.addAttribute("merchantId",merchantId);
+		model.addAttribute("cardNo",cardNo);
+		Cardinformation cardInfo = cardinformationService.queryCardInfoByCardNo(cardNo, appId);
+		model.addAttribute("cardInfo", cardInfo);
+		Map<String, Object> map = new HashMap<>();
+		map.put("statementDate", cardInfo.getStatementdate());
+		map.put("repaymentDate", cardInfo.getRepaymentdate());
+		String url = APIUtil.Find_Date_List;
+		String result = HttpClientUtils.doPost(url, map);
+		System.out.println("result:"+result);
+		JSONObject t = JSONObject.parseObject(result);
+		String data = t.getString("data");
+		List list = JSONObject.parseObject(data, List.class);
+		for (int i = 0; i < list.size(); i++) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			String day = sdf.format(list.get(i));
+			list.set(i,day);
+		}
+		model.addAttribute("unitTimeList", list);
+		return "/system/trade/repairUnit";
 	}
 
 }
