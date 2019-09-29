@@ -45,22 +45,47 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-3 control-label">请选择时间段：</label>
-                    <label class="col-sm-3 control-label">
-                        <input type="radio" id="indexId1" name="indexTime" value="1"/>09:00~12:00
-                        <input type="radio" id="indexId2" name="indexTime" value="2"/>12:00~15:00
-                        <br/>
-                        <input type="radio" id="indexId3" name="indexTime" value="3"/>15:00~18:00
-                        <input type="radio" id="indexId4" name="indexTime" value="4"/>18:00~21:00
+                    <label class="control-label" id="selBox">
+                        <div id="id1" class="div" selData="1">09:00~12:00</div>
+                        <div id="id2" class="div" selData="2">12:00~15:00</div>
+                        <div id="id3" class="div" selData="3">15:00~18:00</div>
+                        <div id="id4" class="div" selData="4">18:00~21:00</div>
                     </label>
                 </div>
             </div>
         </form>
     </div>
 </div>
+<style type="text/css">
+    .div{
+        color: #636363;
+        border: 1px solid #636363;
+        width: 100px;
+        height: 30px;
+        text-align: center;
+        float: left;
+        line-height: 30px;
+        margin-left: 30px;
+    }
+    .nosel{
+        color: #dcdcdc;
+        border: 1px solid #dcdcdc;
+    }
+    .sel{
+        border: 1px solid #217aff;
+        color: #3a74ba;
+    }
+</style>
 <script type="text/javascript">
-    /*$(function(){
-        alert("页面加载完成！");
-    });*/
+    var selVal = "";
+    var selBoxList = $("#selBox div");
+    selBoxList.click(function () {
+        if(!$(this).hasClass('nosel')){
+            $(this).addClass('sel').siblings().removeClass("sel");
+            selVal = $(this).attr("selData");
+
+        }
+    });
     $(document).ready(function(){
         var statementDate = $("#statementDate").val();
         var repaymentDate = $("#repaymentDate").val();
@@ -69,40 +94,34 @@
         console.info("date:"+date);
         if (parseInt(statementDate) > parseInt(repaymentDate)) {
             if (date < parseInt(statementDate) && date > parseInt(repaymentDate)) {
-                layer.confirm("不允许补单元!!", function () {
+                layer.confirm("不允许补单元!!",{btn: ["确认"]}, function () {
                     battcn.closeWindow();
                 });
             }
         } else {
             if (date < parseInt(statementDate) || date > parseInt(repaymentDate)) {
-                layer.confirm("不允许补单元！", function () {
+                layer.confirm("不允许补单元！",{btn: ["确认"]}, function () {
                     battcn.closeWindow();
                 });
             }
         }
     });
     function findTime(){
-        $("#indexId1").prop("checked", false);
-        $("#indexId2").prop("checked", false);
-        $("#indexId3").prop("checked", false);
-        $("#indexId4").prop("checked", false);
+        selVal = "";
+        $.each(selBoxList,function (){
+            $(this).removeClass("sel");
+            $(this).removeClass("nosel");
+        });
         var merchantId = $("#merchantId").val();
         var timestamp = $("#timestamp").val();
         if (timestamp == '') {
             return;
         }
-        console.info("timestamp:"+timestamp);
+        console.info("timestamp:"+timestamp)
         var time = new Date(timestamp + " 00:00:00");
         var timestamp = time.getTime();
         var timestamps = time.getTime();
         var cardNo = $("#cardNo").val();
-        /* 查可补单元时间
-         * http://47.104.161.254:1003/ld17/order/findTime
-         *  timestamp   补单元时间
-         *  merchantId  商户号
-         *  cardNo      卡号
-         *  pwd         yjkj123
-         */
         var timestamp = $("#timestamp").val();
         var time = new Date(timestamp + " 00:00:00");
         var timestamp = time.getTime();
@@ -127,25 +146,28 @@
             var eighteenTime = new Date(eighteen).getTime();
             if (parseInt(timestamp) > eighteenTime) {
                 console.info("eighteenTime"+eighteenTime);
-                $("#indexId1").attr('disabled',true);
-                $("#indexId2").attr('disabled',true);
-                $("#indexId3").attr('disabled',true);
-                $("#indexId4").attr('disabled',true);
+                $.each(selBoxList,function () {
+                    $(this).addClass("nosel");
+                })
             } else if (timestamp > fifteenTime) {
-                console.info("fifteenTime"+fifteenTime);
-                $("#indexId1").attr('disabled',true);
-                $("#indexId2").attr('disabled',true);
-                $("#indexId3").attr('disabled',true);
+                $("#id1").addClass("nosel")
+                $("#id2").addClass("nosel")
+                $("#id3").addClass("nosel")
             } else if (timestamp > twelveTime) {
-                console.info("twelveTime"+twelveTime);
-                $("#indexId1").attr('disabled',true);
-                $("#indexId2").attr('disabled',true);
+                $("#id1").addClass("nosel");
+                $("#id2").addClass("nosel");
             } else if (timestamp > nineTime) {
-                console.info("nineTime"+nineTime);
-                $("#indexId1").attr('disabled',true);
+                $("#id1").addClass("nosel");
             }
         }
         $.ajax({
+            /* 查可补单元时间
+             * http://47.104.161.254:1003/ld17/order/findTime
+             *  timestamp   补单元时间
+             *  merchantId  商户号
+             *  cardNo      卡号
+             *  pwd         yjkj123
+             */
             type: "POST",
             url: "http://47.104.161.254:1003/ld17/order/findTime?timestamp="+timestamp+"&merchantId="+merchantId+"&cardNo="+cardNo+"&pwd=yjkj123",
             //解决编码问题
@@ -167,42 +189,38 @@
 
                         } else if (timestamp > fifteenTime) {
                             if (data.data.four == "0") {
-                                $("#indexId4").attr('disabled', false);
+                                $("#id4").removeClass("nosel");
                             }
                         } else if (timestamp > twelveTime) {
                             if (data.data.three == "0") {
-                                $("#indexId3").attr('disabled', false);
+                                $("#id3").removeClass("nosel");
                             }
                             if (data.data.four == "0") {
-                                $("#indexId4").attr('disabled', false);
+                                $("#id4").removeClass("nosel");
                             }
                         } else if (timestamp > nineTime) {
                             if (data.data.two == "0") {
-                                $("#indexId2").attr('disabled',false);
+                                $("#id2").removeClass("nosel");
                             }
                             if (data.data.three == "0") {
-                                $("#indexId3").attr('disabled', false);
+                                $("#id3").removeClass("nosel");
                             }
                             if (data.data.four == "0") {
-                                $("#indexId4").attr('disabled', false);
+                                $("#id4").removeClass("nosel");
                             }
                         }
                     } else {
                         if (data.data.one == "0") {
-                            console.info("one");
-                            $("#indexId1").attr('disabled',false);
+                            $("#id1").removeClass("nosel");
                         }
                         if (data.data.two == "0") {
-                            console.info("two");
-                            $("#indexId2").attr('disabled',false);
+                            $("#id2").removeClass("nosel");
                         }
                         if (data.data.three == "0") {
-                            console.info("three");
-                            $("#indexId3").attr('disabled', false);
+                            $("#id3").removeClass("nosel");
                         }
                         if (data.data.four == "0") {
-                            console.info("four");
-                            $("#indexId4").attr('disabled', false);
+                            $("#id4").removeClass("nosel");
                         }
                     }
                 } else {
@@ -228,29 +246,19 @@
         save = function () {
             var orderNo = $("#order").val();
             var timestamp = $("#timestamp").val();
-            var obj = document.getElementsByName("indexTime");
-            for (var i = 0; i < obj.length; i++) {
-                if (obj[i].checked) {
-                    var indexTime = obj[i].value;
-                }
-            }
             if (timestamp == "") {
                 layer.msg("请选择补单执行时间！");
                 return;
             }
             var time = new Date(timestamp+" 00:00:00");
             var timestamp = time.getTime();
-            console.info(timestamp+"timestamp");
-            console.info("orderNo:"+orderNo);
-            console.info("timestamp:"+timestamp);
-            console.info("indexTime:"+indexTime);
-            if (indexTime == undefined) {
+            if (selVal == "") {
                 layer.msg("请选择时间段！");
                 return;
             }
             $.ajax({
                 type: "POST",
-                url: "http://47.104.161.254:1003/ld17/order/anewCycle?orderNo="+orderNo+"&timestamp="+timestamp+"&indexTime="+indexTime+"&pwd=yjkj123",
+                url: "http://47.104.161.254:1003/ld17/order/anewCycle?orderNo="+orderNo+"&timestamp="+timestamp+"&indexTime="+selVal+"&pwd=yjkj123",
                 success: function(data){
                     if (data.respCode == "0000") {
                         layer.confirm("操作成功！", function () {

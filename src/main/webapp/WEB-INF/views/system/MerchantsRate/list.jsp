@@ -33,9 +33,9 @@
 			                 	<c:if test="${key.aislecode=='rf'}">
 									<option value ="${key.aislecode}">银联快捷R  </option>
 								</c:if>
-								<c:if test="${key.aislecode=='yb'}">
+								<%--<c:if test="${key.aislecode=='yb'}">
 									<option value ="${key.aislecode}">快捷多商户  </option>
-								</c:if>
+								</c:if>--%>
 								<c:if test="${key.aislecode=='zf01'}">
 									<option value ="${key.aislecode}">银联快捷Z  </option>
 								</c:if>
@@ -48,12 +48,12 @@
 								<c:if test="${key.aislecode=='xj'}">
 									<option value ="${key.aislecode}">银联快捷X  </option>
 								</c:if>
-								<c:if test="${key.aislecode=='ld01'}">
+								<%--<c:if test="${key.aislecode=='ld01'}">
 									<option value ="${key.aislecode}">落地通道L  </option>
 								</c:if>
 								<c:if test="${key.aislecode=='ld02'}">
 									<option value ="${key.aislecode}">落地通道Y  </option>
-								</c:if>
+								</c:if>--%>
 								<c:if test="${key.aislecode=='hz'}">
 									<option value ="${key.aislecode}">银联快捷H  </option>
 								</c:if>
@@ -63,9 +63,9 @@
 								<c:if test="${key.aislecode=='ld03'}">
 									<option value ="${key.aislecode}">落地通道X  </option>
 								</c:if>
-								<c:if test="${key.aislecode=='hz01'}">
+								<%--<c:if test="${key.aislecode=='hz01'}">
 									<option value ="${key.aislecode}">银联快捷H1  </option>
-								</c:if>
+								</c:if>--%>
 								<c:if test="${key.aislecode=='ld04'}">
 									<option value ="${key.aislecode}">落地还款X  </option>
 								</c:if>
@@ -99,12 +99,12 @@
 								 <c:if test="${key.aislecode=='ld15'}">
 									 <option value ="${key.aislecode}">落地大额C2 </option>
 								 </c:if>
-								 <c:if test="${key.aislecode=='ld16'}">
+								 <%--<c:if test="${key.aislecode=='ld16'}">
 									 <option value ="${key.aislecode}">小额落地C2 </option>
 								 </c:if>
 								 <c:if test="${key.aislecode=='ld13'}">
 									 <option value ="${key.aislecode}">落地小额D </option>
-								 </c:if>
+								 </c:if>--%>
 								 <c:if test="${key.aislecode=='ld17'}">
 									 <option value ="${key.aislecode}">组合计划T </option>
 								 </c:if>
@@ -245,9 +245,9 @@
 				if(value == "rf"){
 					return "银联快捷R";
 				}
-				if(value == "yb"){
+				/*if(value == "yb"){
 					return "银联多商户";
-				}
+				}*/
 				if(value == "easy"){
 					return "易生";
 				}
@@ -260,12 +260,12 @@
 				if(value == "xj"){
 					return "银联快捷X";
 				}
-				if(value == "ld01"){
+				/*if(value == "ld01"){
 					return "落地通道L";
 				}
 				if(value == "ld02"){
 					return "落地通道Y";
-				}
+				}*/
 				if(value == "hz"){
 					return "银联快捷H";
 				}
@@ -275,9 +275,9 @@
 				if(value == "ld03"){
 					return "落地通道X";
 				}
-				if(value == "hz01"){
+				/*if(value == "hz01"){
 					return "银联快捷H1";
-				}
+				}*/
 				if(value == "ld04"){
 					return "落地还款X";
 				}
@@ -311,12 +311,12 @@
                 if(value == "ld15"){
                     return "落地大额C2";
                 }
-                if(value == "ld16"){
+                /*if(value == "ld16"){
                     return "小额落地C2";
                 }
                 if(value == "ld13"){
                     return "落地小额D";
-                }
+                }*/
                 if(value == "ld17"){
                     return "组合计划T";
                 }

@@ -292,18 +292,43 @@ public class PlanController extends BaseController {
 
 	@RequestMapping("queryInterruptPlanList")
 	@ResponseBody
-	public PageInfo<PlanGroup> queryInterruptPlanList(String groupId, String state, String merchantId){
+	public PageInfo<PlanGroup> queryInterruptPlanList(String groupId,
+													  String merchantId,
+													  String executeState,
+													  String clearState,
+													  String appId,
+													  String startTime,
+													  String finishTime){
 		Map<String, Object> map = new HashMap<String, Object>();
 		UserEntity k=UserEntityUtil.getUserFromSession();
 		map.put("institutionId", k.getMerId());
 		if(!StringUtils.isBlank(groupId)){
 			map.put("groupId", groupId);
 		}
-		if(!StringUtils.isBlank(state)){
-			map.put("state", state);
-		}
 		if(!StringUtils.isBlank(merchantId)){
 			map.put("merchantId", merchantId);
+		}
+		if(!StringUtils.isBlank(executeState)){
+			map.put("executeState", executeState);
+		}
+		if(!StringUtils.isBlank(clearState)){
+			map.put("clearState", clearState);
+		}
+		if(!StringUtils.isBlank(appId)){
+			map.put("appId", appId);
+		}
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			if(!"".equals(startTime)){
+				long startSeconds = sdf.parse(startTime).getTime();
+				map.put("startTime", startSeconds);
+			}
+			if(!"".equals(finishTime)){
+				long finishSeconds = sdf.parse(finishTime).getTime();
+				map.put("finishTime", finishSeconds);
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}
 		PageInfo<PlanGroup> page = planService.queryInterruptPlanList(map);
 		return page;

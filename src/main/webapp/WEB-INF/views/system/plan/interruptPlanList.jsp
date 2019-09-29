@@ -13,27 +13,51 @@
             <form role="form" class="form-inline" id="interruptPlanListFrom">
                 <div class="input-group">
                     <input type="text" placeholder="组合计划编号" name="groupId" id="groupId"
-                           class="input form-control"> <span class="input-group-btn">
-                            </span>
+                           class="input form-control">
+                    <span class="input-group-btn"></span>
                 </div>
-                <%--<div class="input-group">
-                    <input type="text" placeholder="中断时间" name="pId" id="pId"
-                           class="input form-control"> <span class="input-group-btn">
-                            </span>
-                </div>--%>
                 <div class="input-group">
-                    <select name="state" id="state" class="input form-control">
-                        <option value ="">请选择</option>
-                        <option value ="1">中断未清算</option>
+                    <input type="text" placeholder="商户号" name="merchantId" id="merchantId"
+                           class="input form-control">
+                    <span class="input-group-btn"></span>
+                </div>
+                <div class="input-group">
+                    <select name="executeState" id="executeState" class="input form-control">
+                        <option value ="">请选择执行状态</option>
+                        <option value ="1">执行中</option>
+                        <option value ="2">中断</option>
+                    </select>
+                    <span class="input-group-btn"></span>
+                </div>
+                <div class="input-group">
+                    <select name="clearState" id="clearState" class="input form-control">
+                        <option value ="">请选择清算状态</option>
+                        <option value ="1">未清算</option>
                         <option value ="2">清算中</option>
                         <option value ="3">清算成功</option>
                     </select>
                     <span class="input-group-btn"></span>
                 </div>
+                <div class="form-group">
+                    <div class="col-sm-8">
+                        <input type="text" placeholder="组合计划创建开始时间" name="starttime" id="startTime" class="Wdate" onclick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+                        <span class="help-block m-b-none"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-8">
+                        <input type="text" placeholder="组合计划创建结束时间" name="finishtime" id="finishTime" class="Wdate" onclick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+                        <span class="help-block m-b-none"></span>
+                    </div>
+                </div>
                 <div class="input-group">
-                    <input type="text" placeholder="商户号" name="merchantId" id="merchantId"
-                           class="input form-control"> <span class="input-group-btn">
-                            </span>
+                    <select name="appId" id="appId" class="input form-control" >
+                        <option value ="">请选择app  </option>
+                        <c:forEach items="${app}" var="key">
+                            <option value ="${key.appId}">${key.appName}  </option>
+                        </c:forEach>
+                    </select>
+                    <span class="input-group-btn"></span>
                 </div>
                 <div class="input-group">
                     <button type="button" class="btn btn btn-primary"
@@ -62,23 +86,40 @@
     </div>
 </div>
 <script type="text/javascript">
-    function getState() {
-        return $.map($("#interruptPlanListTable").bootstrapTable('getSelections'), function(
-            row) {
-            return row.state
-        });
-    }
     function getGroupId() {
         return $.map($("#interruptPlanListTable").bootstrapTable('getSelections'), function(
             row) {
             return row.groupId
         });
     }
+    function getExecuteState() {
+        return $.map($("#interruptPlanListTable").bootstrapTable('getSelections'), function(
+            row) {
+            return row.executeState
+        });
+    }
+    function getClearState() {
+        return $.map($("#interruptPlanListTable").bootstrapTable('getSelections'), function(
+            row) {
+            return row.clearState
+        });
+    }
+    function getAisleCode() {
+        return $.map($("#interruptPlanListTable").bootstrapTable('getSelections'), function(
+            row) {
+            return row.aisleCode
+        });
+    }
     //清算
     function clearPlan() {
-        var state = getState();
+        var executeState = getExecuteState();
+        var clearState = getClearState();
         var groupId = getGroupId();
+        var aisleCode = getAisleCode();
         console.info("groupId"+groupId);
+        console.info("clearState"+clearState);
+        console.info("executeState"+executeState);
+        console.info("aisleCode"+aisleCode);
         if (groupId == "") {
             layer.msg("请选择数据！");
             return;
@@ -87,33 +128,27 @@
             layer.msg("请选择一条数据！");
             return;
         }
-        if (state != 1) {
-            layer.msg("请选择状态为中断未清算！");
+        if (executeState != 2) {
+            layer.msg("请选择状态为中断！");
+            return;
+        }
+        if (clearState != 1) {
+            layer.msg("请选择状态为未清算！");
             return;
         }
         $.ajax({
             type: "POST",
-            url: rootPath + "/Plan/clearPlan.shtml?groupId="+groupId,
-            //解决编码问题
+            url: "http://47.104.161.254:1003/"+aisleCode+"/planMultiCard/clear?groupId="+groupId,
             contentType: "application/x-www-form-urlencoded; charset=utf-8",
-            // contentType : "application/json",
-            dataType: "json",
             success: function(data){
-                console.info("data"+data);
                 if(data.respCode == "0000"){
                     layer.confirm('清算成功!是否关闭窗口?', function(index) {
                         battcn.closeWindow();
                         $('#interruptPlanListTable').bootstrapTable('refresh');
                         return false;
                     });
-                } else if (data.respCode == "3984") {
-                    layer.confirm(data.respDesc+",请操作补状态功能处理!", function(index) {
-                        battcn.closeWindow();
-                        $('#interruptPlanListTable').bootstrapTable('refresh');
-                        return false;
-                    });
                 } else {
-                    layer.confirm(data.respDesc, function(index) {
+                    layer.confirm('清算失败!'+data.respDesc, function(index) {
                         battcn.closeWindow();
                         $('#interruptPlanListTable').bootstrapTable('refresh');
                         return false;
@@ -124,15 +159,19 @@
                     msg: data.success ? '成功' :'失败'
                 });
             }
-        });
+        })
     }
     function agentSearchplan() {
         $('#interruptPlanListTable').bootstrapTable('refresh');
     }
     function queryInterruptPlan(params) {
         var groupId = $("#groupId").val();
-        var state = $("#state").val();
         var merchantId = $("#merchantId").val();
+        var executeState = $("#executeState").val();
+        var clearState = $("#clearState").val();
+        var appId = $("#appId").val();
+        var startTime = $("#startTime").val();
+        var finishTime = $("#finishTime").val();
         var pageSize = params.limit;
         var sort = params.sort;
         var offset = params.offset;
@@ -143,9 +182,13 @@
             pageNum : pageNum,
             sort : sort,
             order : order,
+            groupId : groupId,
             merchantId : merchantId,
-            state:state,
-            groupId:groupId
+            executeState:executeState,
+            clearState:clearState,
+            appId:appId,
+            startTime:startTime,
+            finishTime:finishTime
         }
     }
     $('#interruptPlanListTable').bootstrapTable({
@@ -176,18 +219,31 @@
             align : 'center',
             valign : 'middle'
         }, {
-            field : 'createTime',
-            title : '中断时间',
+            field : 'merchantId',
+            title : '商户号',
             align : 'center',
             valign : 'middle'
         }, {
-            field : 'state',
-            title : '状态',
+            field : 'executeState',
+            title : '组合计划执行状态',
             align : 'center',
             valign : 'middle',
             formatter:function (value) {
                 if(value == "1"){
-                    return '中断未清算';
+                    return '执行中';
+                }
+                if(value == "2"){
+                    return '中断';
+                }
+            }
+        }, {
+            field : 'clearState',
+            title : '组合计划清算状态',
+            align : 'center',
+            valign : 'middle',
+            formatter:function (value) {
+                if(value == "1"){
+                    return '未清算';
                 }
                 if(value == "2"){
                     return '清算中';
@@ -197,8 +253,34 @@
                 }
             }
         }, {
-            field : 'merchantId',
-            title : '商户号',
+            field : 'totalRepAmount',
+            title : '总还款金额',
+            align : 'center',
+            valign : 'middle',
+            formatter:function (value) {
+                return value/100;
+            }
+        }, {
+            field : 'totalFee',
+            title : '总手续费',
+            align : 'center',
+            valign : 'middle',
+            formatter:function (value) {
+                return value/100;
+            }
+        }, {
+            field : 'appId',
+            title : '归属app',
+            align : 'center',
+            valign : 'middle',
+            formatter:function (value) {
+                if (value == "0000") {
+                    return "卡神";
+                }
+            }
+        }, {
+            field : 'createTime',
+            title : '中断时间',
             align : 'center',
             valign : 'middle'
         }]

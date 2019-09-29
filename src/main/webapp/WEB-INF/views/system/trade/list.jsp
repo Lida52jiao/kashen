@@ -57,12 +57,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<select name="aisleCode" id="aisleCode" class="input form-control" >
 						<option value ="">请选择通道  </option>
 		                        <c:forEach items="${aisleCode}" var="key">
-							 		<c:if test="${key.aislecode=='ld01'}">
+							 		<%--<c:if test="${key.aislecode=='ld01'}">
 									<option value ="${key.aislecode}">落地通道L  </option>
 									</c:if>
 									<c:if test="${key.aislecode=='ld02'}">
 										<option value ="${key.aislecode}">落地通道Y  </option>
-									</c:if>
+									</c:if>--%>
 									<c:if test="${key.aislecode=='ld03'}">
 									<option value ="${key.aislecode}">落地通道X  </option>
 									</c:if>
@@ -71,8 +71,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									</c:if>
 									<c:if test="${key.aislecode=='ld05'}">
 									<option value ="${key.aislecode}">落地还款T  </option>
-								</c:if>
-								<c:if test="${key.aislecode=='ld06'}">
+                                    </c:if>
+                                    <c:if test="${key.aislecode=='ld06'}">
 									<option value ="${key.aislecode}">大额还款K </option>
 									</c:if>
 									<c:if test="${key.aislecode=='ld07'}">
@@ -93,12 +93,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<c:if test="${key.aislecode=='ld15'}">
 										<option value ="${key.aislecode}">落地大额C2 </option>
 									</c:if>
-									<c:if test="${key.aislecode=='ld16'}">
+									<%--<c:if test="${key.aislecode=='ld16'}">
 										<option value ="${key.aislecode}">小额落地C2 </option>
 									</c:if>
 									<c:if test="${key.aislecode=='ld13'}">
 										<option value ="${key.aislecode}">落地小额D </option>
-									</c:if>
+									</c:if>--%>
 									<c:if test="${key.aislecode=='ld17'}">
 										<option value ="${key.aislecode}">组合计划T </option>
 									</c:if>
@@ -178,6 +178,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div class="input-group">
 					<input type="text" placeholder="输入组合计划编号" name="groupId" id="groupId"
 						   class="input form-control"> <span class="input-group-btn">
+					</span>
+				</div>
+				<div class="input-group">
+					<select name="isAnew" id="isAnew" class="input form-control">
+						<option value ="">请选择补单状态</option>
+						<option value ="0">否</option>
+						<option value ="1">是</option>
+					</select>
+					<span class="input-group-btn">
 					</span>
 				</div>
 				<div class="input-group">
@@ -534,6 +543,7 @@ function getState() {
 		var aisleCode = $("#aisleCode").val();
 		var payType = $("#payType").val();
 		var groupId = $("#groupId").val();
+		var isAnew = $("#isAnew").val();
 		var pageSize = params.limit;
 		var sort = params.sort;
 		var offset = params.offset;
@@ -559,7 +569,8 @@ function getState() {
 			planId : planId,
 			aisleCode : aisleCode,
 			payType : payType,
-            groupId : groupId
+            groupId : groupId,
+            isAnew : isAnew
 		}
 	} 
 	$('#trade').bootstrapTable({
@@ -608,12 +619,12 @@ function getState() {
 			align : 'center',
 			valign : 'middle',
 			formatter:function (value) {
-				if(value == "ld01"){
+				/*if(value == "ld01"){
 					return '落地通道L';
 				}
 				if(value == "ld02"){
 					return '落地通道Y';
-				}
+				}*/
 				if(value == "ld03"){
 					return "落地通道X";
 				}
@@ -644,12 +655,12 @@ function getState() {
                 if(value == "ld15"){
                     return "落地大额C2";
                 }
-                if(value == "ld16"){
+                /*if(value == "ld16"){
                     return "小额落地C2";
                 }
                 if(value == "ld13"){
                     return "落地小额D";
-                }
+                }*/
                 if(value == "ld17"){
                     return "组合计划T";
                 }
@@ -896,6 +907,19 @@ function getState() {
 				}
 			}
 		},{
+		    field : 'isAnew',
+			title : '是否补单',
+			align : 'center',
+			valign : 'middle',
+			formatter:function (value) {
+				if (value == "1") {
+				    return "是";
+				}
+				if (value == "0") {
+				    return "否";
+				}
+            }
+        },{
 			field : 'cycleId',
 			title : '计划单元Id',
 			align : 'center',

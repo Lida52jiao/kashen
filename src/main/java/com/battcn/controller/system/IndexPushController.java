@@ -1,5 +1,7 @@
 package com.battcn.controller.system;
 
+import com.alibaba.fastjson.JSONObject;
+import com.battcn.constant.InstitutionIdNumber;
 import com.battcn.controller.BaseController;
 import com.battcn.entity.AppName;
 import com.battcn.entity.IndexPush;
@@ -23,6 +25,8 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Author: Create By DaDa
@@ -77,6 +81,7 @@ public class IndexPushController extends BaseController {
         String filePath = "";
         UserEntity k = UserEntityUtil.getUserFromSession();
         // 判断文件是否为空
+        String result = "";
         if (!file.isEmpty()) {
             try {
                 // 文件保存路径
@@ -85,6 +90,22 @@ public class IndexPushController extends BaseController {
                         + file.getOriginalFilename();
                 // 转存文件
                 file.transferTo(new File(filePath));
+
+                String s = MD5Util.getMD5String(filePath);
+                String ossKey = "indexPush/" + s;
+                OSSClientUtil clientUtil = new OSSClientUtil();
+                Date expiration = new Date(new Date().getTime() + 3600L * 1000 * 24
+                        * 365 * 10);
+                try {
+                    InputStream instream = new FileInputStream(filePath);
+                    clientUtil.uploadFile2OSS(instream, ossKey);
+                    // 获取url
+                    URL url = clientUtil.createUrl(ossKey, expiration);
+                    clientUtil.destory();
+                    result = url.toString();
+                } catch (FileNotFoundException ef) {
+                    ef.printStackTrace();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 return "f";
@@ -92,21 +113,8 @@ public class IndexPushController extends BaseController {
         } else {
 //            return "fail";
         }
-        String s = MD5Util.getMD5String(filePath);
-        String ossKey = "indexPush/" + s;
-        String result = "";
-        OSSClientUtil clientUtil = new OSSClientUtil();
-        Date expiration = new Date(new Date().getTime() + 3600L * 1000 * 24
-                * 365 * 10);
         // 上传
-        InputStream instream = null;
         try {
-            instream = new FileInputStream(filePath);
-            clientUtil.uploadFile2OSS(instream, ossKey);
-            // 获取url
-            URL url = clientUtil.createUrl(ossKey, expiration);
-            clientUtil.destory();
-            result = url.toString();
             IndexPush n = new IndexPush();
             AppName appNames = new AppName();
             appNames.setAgentId(k.getMerId());
@@ -119,8 +127,17 @@ public class IndexPushController extends BaseController {
             n.setImgUrl(result);
             n.setMsg(msg);
             indexPushService.save(n);
+            /** 调用消息系统 **/
+            Map<String,Object> param = new HashMap<>();
+            param.put("msg", msg);
+            param.put("type","1");
+            param.put("institutionId", InstitutionIdNumber.AGENT);
+            param.put("appId",appNames.getAppId());
+            String resultJsonStr = HttpClientUtils.doPost("http://47.104.25.59:1183/sendMessage/send", param);
+            JSONObject job = JSONObject.parseObject(resultJsonStr);
+            System.out.println("job:"+job);
             return "success";
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return "f";
         }

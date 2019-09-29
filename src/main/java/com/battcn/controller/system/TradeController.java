@@ -1,23 +1,19 @@
 package com.battcn.controller.system;
 
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.alibaba.fastjson.JSON;
+import com.battcn.constant.Constaint;
 import com.battcn.entity.*;
 import com.battcn.service.system.*;
 import com.battcn.util.*;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -180,7 +176,8 @@ public class TradeController extends BaseController {
 											  String aisleCode,
 											  String payType,
 											  String cycleId,
-											  String groupId) throws UnsupportedEncodingException, ParseException {
+											  String groupId,
+											  String isAnew) throws UnsupportedEncodingException, ParseException {
 		UserEntity k=UserEntityUtil.getUserFromSession();
 		name = new String(name.getBytes("iso8859-1"), "utf-8");
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -231,6 +228,9 @@ public class TradeController extends BaseController {
 				}
 				if(!StringUtils.isBlank(groupId)){
 					map.put("groupId", groupId);
+				}
+				if(!StringUtils.isBlank(isAnew)){
+					map.put("isAnew", isAnew);
 				}
 				if(!StringUtils.isBlank(executestartTime)){
 					map.put("executeDateStr", executestartTime);
@@ -283,6 +283,9 @@ public class TradeController extends BaseController {
 				if(!StringUtils.isBlank(groupId)){
 					map.put("groupId", groupId);
 				}
+				if(!StringUtils.isBlank(isAnew)){
+					map.put("isAnew", isAnew);
+				}
 				if(!StringUtils.isBlank(executestartTime)){
 					map.put("executeDateStr", executestartTime);
 				}
@@ -323,6 +326,9 @@ public class TradeController extends BaseController {
 			}
 			if(!StringUtils.isBlank(groupId)){
 				map.put("groupId", groupId);
+			}
+			if(!StringUtils.isBlank(isAnew)){
+				map.put("isAnew", isAnew);
 			}
 			if(!StringUtils.isBlank(repaymentState)){
 				map.put("repaymentState", repaymentState);
@@ -653,6 +659,73 @@ public class TradeController extends BaseController {
 		}
 		model.addAttribute("unitTimeList", list);
 		return "/system/trade/repairUnit";
+	}
+	@RequestMapping("/wsFind")
+	public String wsFind(Model model){
+		return "/system/trade/wsFind";
+	}
+	@RequestMapping("/queryWsFindList")
+	@ResponseBody
+	public PageInfo<WsOrderEntity> queryWsFindList(WsOrderEntity ws){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Map<String, Object> map = new HashMap<String, Object>();
+		if (!StringUtils.isBlank(ws.getOrderNo())) {
+			map.put("orderNo", ws.getOrderNo());
+		}
+		if (!StringUtils.isBlank(ws.getMerchantId())) {
+			map.put("merchantId", ws.getMerchantId());
+		}
+		if (!StringUtils.isBlank(ws.getAgentId())) {
+			map.put("agentId", ws.getAgentId());
+		}
+		if (!StringUtils.isBlank(ws.getName())) {
+			map.put("name", ws.getName());
+		}
+		if (!StringUtils.isBlank(ws.getPhone())) {
+			map.put("phone", ws.getPhone());
+		}
+		if (!StringUtils.isBlank(ws.getState())) {
+			map.put("state", ws.getState());
+		}
+		if (!StringUtils.isBlank(ws.getStartTime())) {
+			try {
+				Long time = sdf.parse(ws.getStartTime()).getTime();
+				map.put("startTime", time);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		if (!StringUtils.isBlank(ws.getFinishTime())) {
+			try {
+				Long time = sdf.parse(ws.getFinishTime()).getTime();
+				map.put("finishTime", time);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		HttpServletRequest request = CommonUtil.getHttpRequest();
+		Integer pageNum = CommonUtil
+				.valueOf(request.getParameter("pageNum"), 1);
+		Integer pageSize = CommonUtil.valueOf(request.getParameter("pageSize"),
+				10);
+		String orderField = request.getParameter("sort");
+		String orderDirection = request.getParameter("order");
+		map.put("pageNum", pageNum.toString());
+		map.put("pageSize", pageSize.toString());
+		map.put("sort", orderField);
+		map.put("order", orderDirection);
+		String result = HttpClientUtil.doPost(Constaint.WsFind, map);
+		System.out.println("result == "+result);
+		JSONObject t = JSONObject.parseObject(result);
+		String string = t.get("data").toString();
+		JSONObject object = JSONObject.parseObject(string);
+		List<WsOrderEntity> list = JSON.parseArray(object.getString("list"),WsOrderEntity.class);
+		PageInfo<WsOrderEntity> page = new PageInfo<WsOrderEntity>();
+		page.setList(list);
+		page.setPageSize(Integer.parseInt(object.getString("pageSize")));
+		page.setPages(Integer.parseInt(object.getString("pages")));
+		page.setTotal(Integer.parseInt(object.getString("total")));
+		return page;
 	}
 
 }

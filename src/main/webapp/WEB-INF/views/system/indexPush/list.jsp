@@ -28,16 +28,32 @@
                 </div>
             </div>
 			<div class="form-group">
+				<%--<label class="col-sm-3 control-label">内容：</label>
+				<div class="col-sm-8">
+					<textarea name="msg" rows="5" cols="35" class="inPush"
+							  onkeyup="huitextarealength(this)"></textarea>
+					<p class="textarea-numberbar">
+						<em class="textarea-length">0</em>/
+						<am>100</am>
+					</p>
+					<span class="help-block m-b-none"></span>
+				</div>--%>
 				<label class="col-sm-3 control-label">内容：</label>
 				<div class="col-sm-8">
-					<textarea name="msg" rows="2" cols="25" class="inPush" ></textarea>
-					<span class="help-block m-b-none"></span>
+				<textarea onkeydown="checkMaxInput(this,300)"
+						  onkeyup="checkMaxInput(this,300)"
+						  onfocus="checkMaxInput(this,300)"
+						  onblur="checkMaxInput(this,300);resetMaxmsg()"
+						  style="width:99%;height:190px;"
+						  placeholder="这里写内容"
+							name="msg" class="inPush"></textarea>
+				<span class="help-block m-b-none"></span>
 				</div>
 			</div>
             <div class="form-group">
                 <label class="col-sm-3 control-label">标题:</label>
                 <div class="col-sm-8">
-                    <input id="title" name="title"  class="inPush" type="text" value="">
+                    <input id="title" name="title"  class="inPush" type="text" value=""/>
                 </div>
             </div>
 			<div class="form-group">
@@ -63,9 +79,36 @@
 <script>
    $(document).ready(function(){$(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",})});
 </script>
-
 <script type="text/javascript">
-
+    function checkMaxInput(obj, maxLen) {
+        if (obj == null || obj == undefined || obj == "") {
+            return;
+        }
+        if (maxLen == null || maxLen == undefined || maxLen == "") {
+            maxLen = 100;
+        }
+        var strResult;
+        var $obj = $(obj);
+        var newid = $obj.attr("id") + 'msg';
+        if (obj.value.length > maxLen) { //如果输入的字数超过了限制
+            obj.value = obj.value.substring(0, maxLen); //就去掉多余的字
+            strResult = '<div style="text-align:right;"><span id="' + newid + '" class=\'Max_msg clearfix\' >剩余：' + (maxLen - obj.value.length) + '字</span></div>'; //计算并显示剩余字数
+        }
+        else {
+            strResult = '<div style="text-align:right;"><span id="' + newid + '" class=\'Max_msg clearfix\' >剩余：' + (maxLen - obj.value.length) + '字</span></div>'; //计算并显示剩余字数
+        }
+        var $msg = $("#" + newid);
+        if ($msg.length == 0) {
+            $obj.after(strResult);
+        }
+        else {
+            $msg.html(strResult);
+        }
+    }
+    //清空剩除字数提醒信息
+    function resetMaxmsg() {
+        $("span.Max_msg").remove();
+    }
  $(function(){
      savePush = function(obj) {
          var form = new FormData(document.getElementById("IPush"));

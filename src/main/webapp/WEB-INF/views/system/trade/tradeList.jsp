@@ -59,9 +59,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                 	<c:if test="${key.aislecode=='rf'}">
 									<option value ="${key.aislecode}">银联快捷R  </option>
 								</c:if>
-								<c:if test="${key.aislecode=='yb'}">
+								<%--<c:if test="${key.aislecode=='yb'}">
 									<option value ="${key.aislecode}">快捷多商户  </option>
-								</c:if>
+								</c:if>--%>
 								<c:if test="${key.aislecode=='zf01'}">
 									<option value ="${key.aislecode}">银联快捷Z  </option>
 								</c:if>
@@ -80,9 +80,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<c:if test="${key.aislecode=='xjwk'}">
 									<option value ="${key.aislecode}">大额落地X  </option>
 								</c:if>
-								<c:if test="${key.aislecode=='hz01'}">
+								<%--<c:if test="${key.aislecode=='hz01'}">
 									<option value ="${key.aislecode}">银联快捷H1  </option>
-								</c:if>
+								</c:if>--%>
 								<c:if test="${key.aislecode=='cj'}">
 									<option value ="${key.aislecode}">大额快捷C  </option>
 								</c:if>
@@ -323,9 +323,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				if(value == "xjwk"){
 					return "大额落地X";
 				}
-				if(value == "hz01"){
+				/*if(value == "hz01"){
 					return "银联快捷H1";
-				}
+				}*/
 				if(value == "cj"){
 					return "大额快捷C";
 				}

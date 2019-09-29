@@ -141,4 +141,6 @@ public class Constaint {
 
     public static final String WsList = "http://47.104.198.186:1010/ws/findConfig";
 
+    public static final String WsFind = "http://47.104.198.186:1010/ws/find";
+
 }
