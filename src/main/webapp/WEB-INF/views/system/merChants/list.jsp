@@ -99,13 +99,13 @@
 						</button>
 					</span>
 				</div>
-				<div class="input-group">
+				<%--<div class="input-group">
 					<button type="button" class="btn btn btn-primary"
 							onclick="javascript:merchantsExcel();">
 						<i class="fa fa-search"></i> 导出
 					</button>
 					</span>
-				</div>
+				</div>--%>
 
 			</form>
 			<div class="table-responsive">

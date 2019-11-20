@@ -1,7 +1,10 @@
 package com.battcn.controller.system;
 
+import java.math.BigDecimal;
 import java.util.List;
 
+import com.battcn.entity.Transaction;
+import com.battcn.service.system.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,10 +16,6 @@ import com.battcn.controller.BaseController;
 import com.battcn.entity.AgentLevel;
 import com.battcn.entity.AgentRate;
 import com.battcn.entity.AgentRateVo;
-import com.battcn.service.system.AgentLevelService;
-import com.battcn.service.system.AgentRateService;
-import com.battcn.service.system.AppNameService;
-import com.battcn.service.system.ChangelRateService;
 import com.github.pagehelper.PageInfo;
 
 @Controller
@@ -31,6 +30,8 @@ public class AgentRateController extends BaseController {
 	private AgentLevelService agentLevelService;
 	@Autowired
 	private AppNameService appNameService;
+	@Autowired
+	private TransactionService transactionService;
 
 	@RequestMapping("list")
 	@SystemLog(module = "代理商管理", methods = "查询代理商无卡底价设置")
@@ -81,5 +82,36 @@ public class AgentRateController extends BaseController {
 	public PageInfo<AgentRate> queryAlert(String agentid) {
 		PageInfo<AgentRate> page = agentRateService.queryList(agentid);
 		return page;
+	}
+
+	/**
+	 * 刷費率
+	 */
+	@RequestMapping("saveAgentRate")
+	public void saveAgentRate(){
+		List<Transaction> list = transactionService.queryObjectForList();
+		System.out.println("list.size()"+list.size());
+		for (int i = 0; i < list.size(); i++) {
+			Transaction t = list.get(i);
+			String agentStart = t.getAgentStatus();
+			String merId = t.getMerId();
+			String merChantId = t.getMerChantId();
+			if (merId.equals("T00000009")) {
+			} else {
+				AgentRate rate = new AgentRate();
+				if (agentStart.equals("1")) {//代理
+					rate.setRate(new BigDecimal("0.0061"));
+					rate.setD0fee(200);
+				} else if (agentStart.equals("2")){//运营商
+					rate.setRate(new BigDecimal("0.0058"));
+					rate.setD0fee(200);
+				}
+				rate.setMerchantid(merChantId);
+				rate.setAgentid(merId);
+				rate.setAislecode("ybq");
+				agentRateService.insert(rate);
+			}
+			System.out.println("i========="+i);
+		}
 	}
 }

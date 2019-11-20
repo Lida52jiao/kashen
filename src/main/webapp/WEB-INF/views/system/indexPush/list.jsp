@@ -43,10 +43,10 @@
 				<textarea onkeydown="checkMaxInput(this,300)"
 						  onkeyup="checkMaxInput(this,300)"
 						  onfocus="checkMaxInput(this,300)"
-						  onblur="checkMaxInput(this,300);resetMaxmsg()"
+						  onblur="checkMaxInput(this,300);"
 						  style="width:99%;height:190px;"
 						  placeholder="这里写内容"
-							name="msg" class="inPush"></textarea>
+						  id="msg" name="msg" class="inPush"></textarea>
 				<span class="help-block m-b-none"></span>
 				</div>
 			</div>
@@ -91,17 +91,15 @@
         var $obj = $(obj);
         var newid = $obj.attr("id") + 'msg';
         if (obj.value.length > maxLen) { //如果输入的字数超过了限制
-            obj.value = obj.value.substring(0, maxLen); //就去掉多余的字
-            strResult = '<div style="text-align:right;"><span id="' + newid + '" class=\'Max_msg clearfix\' >剩余：' + (maxLen - obj.value.length) + '字</span></div>'; //计算并显示剩余字数
-        }
-        else {
+            // obj.value = obj.value.substring(0, maxLen); //就去掉多余的字
+            strResult = '<div style="text-align:right;color: red"><span id="' + newid + '" class=\'Max_msg clearfix\' >剩余：' + (maxLen - obj.value.length) + '字</span></div>'; //计算并显示剩余字数
+        } else {
             strResult = '<div style="text-align:right;"><span id="' + newid + '" class=\'Max_msg clearfix\' >剩余：' + (maxLen - obj.value.length) + '字</span></div>'; //计算并显示剩余字数
         }
         var $msg = $("#" + newid);
         if ($msg.length == 0) {
             $obj.after(strResult);
-        }
-        else {
+        } else {
             $msg.html(strResult);
         }
     }
@@ -112,6 +110,13 @@
  $(function(){
      savePush = function(obj) {
          var form = new FormData(document.getElementById("IPush"));
+		 var msg = $('#msg').val();
+		 if (msg.length>300) {
+             layer.confirm("您好，输入内容长度超出限制！", {btn:["确认"]}, function () {
+                 battcn.closeWindow();
+             });
+             return;
+		 }
          if($("#IPush").valid()){
              layer.confirm('上传图片时间较长请耐心等待！');
              $.ajax({

@@ -687,6 +687,7 @@ public class TradeController extends BaseController {
 		if (!StringUtils.isBlank(ws.getState())) {
 			map.put("state", ws.getState());
 		}
+		map.put("institutionId","T00000009");
 		if (!StringUtils.isBlank(ws.getStartTime())) {
 			try {
 				Long time = sdf.parse(ws.getStartTime()).getTime();

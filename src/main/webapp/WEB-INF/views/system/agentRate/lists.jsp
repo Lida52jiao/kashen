@@ -48,6 +48,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<c:if test="${key.aislecode=='kft'}">
 									<option value ="${key.aislecode}">大额快捷K  </option>
 								</c:if>
+								 <c:if test="${key.aislecode=='ybq'}">
+									 <option value ="${key.aislecode}">大额快捷M </option>
+								 </c:if>
 							</c:forEach>
 		  			</select>
 	  			</div>

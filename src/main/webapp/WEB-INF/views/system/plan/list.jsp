@@ -86,6 +86,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<c:if test="${key.aislecode=='ld17'}">
 										<option value ="${key.aislecode}">组合计划T </option>
 									</c:if>
+									<c:if test="${key.aislecode=='ybq'}">
+										<option value ="${key.aislecode}">大额快捷M </option>
+									</c:if>
 								</c:forEach>
 	  					</select>
 					 <span class="input-group-btn">
@@ -354,6 +357,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 }*/
                 if(value == "ld17"){
                     return "组合计划T";
+                }
+                if(value == "ybq"){
+                    return "大额快捷M";
                 }
 			}
 		},{

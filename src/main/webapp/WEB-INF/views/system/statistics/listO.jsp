@@ -241,6 +241,9 @@
                 if(value == "ld17"){
                     return "组合计划T";
                 }
+                if(value == "ybq"){
+                    return "大额快捷M";
+                }
             }
         },{
             field : 'totalAmount',

@@ -102,6 +102,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<c:if test="${key.aislecode=='ld17'}">
 										<option value ="${key.aislecode}">组合计划T </option>
 									</c:if>
+									<c:if test="${key.aislecode=='ybq'}">
+										<option value ="${key.aislecode}">大额快捷M </option>
+									</c:if>
 								</c:forEach>
 	  					</select>
 					 <span class="input-group-btn">
@@ -201,9 +204,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<i class="fa fa-search"></i> 导出
 					</button>
 				</div>--%>
-				<div class="input-group">
+				<%--<div class="input-group">
 					<input class="btn btn btn-primary" id="tradeExcel" type="button" value="导出">
-				</div>
+				</div>--%>
 			</form>
 			<div class="table-responsive">
 				<table id="trade" data-toolbar="#toolbar"
@@ -251,6 +254,41 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         /* row delimeter used in all filetypes */
         $.fn.tableExport.rowDel = "\r\n";
     });
+    function tradeExcel(){
+        $("#trade").tableExport({
+            headings: true,
+            footers: true,
+            formats: "csv",
+            fileName: "消费还款",
+            bootstrap: false,
+            position: "bottom",
+            ignoreRows: null,
+            ignoreCols: null,
+            ignoreColumn: [0]
+        });
+        /* Comma Separated Values (.csv) */
+        $.fn.tableExport.csv = {
+            defaultClass: "csv",
+            buttonContent: "Export to csv",
+            separator: ",",
+            mimeType: "application/csv",
+            fileExtension: ".csv"
+        };
+        /* default charset encoding (UTF-8) */
+        $.fn.tableExport.charset = "charset=utf-8";
+
+        /* default filename if "id" attribute is set and undefined */
+        $.fn.tableExport.defaultFileName = "myDownload";
+
+        /* default class to style buttons when not using bootstrap  */
+        $.fn.tableExport.defaultButton = "button-default";
+
+        /* bootstrap classes used to style and position the export buttons */
+        $.fn.tableExport.bootstrap = ["btn", "btn-default", "btn-toolbar"];
+
+        /* row delimeter used in all filetypes */
+        $.fn.tableExport.rowDel = "\r\n";
+    };
 function getPlanOrderNo() {
 	return $.map($("#trade").bootstrapTable('getSelections'), function(
 			row) {
@@ -663,6 +701,9 @@ function getState() {
                 }*/
                 if(value == "ld17"){
                     return "组合计划T";
+                }
+                if(value == "ybq"){
+                    return "大额快捷M";
                 }
 			}
 		}, {

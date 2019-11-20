@@ -92,15 +92,41 @@ public class RatesController extends BaseController{
 		r.setAislecode("ld14");
 		List<Rate> page = ratesdelService.queryObjectForList(r);
 		System.err.println("=======================>>>"+page.size()+"<<<==========================");
+		Integer val = 0;
 		for(Rate a : page){
 			Rate s = new Rate();
-			s.setAislecode("ld17");
+			s.setAislecode("ld21");
 			s.setAgentid(a.getAgentid());
 			s.setD0fee(a.getD0fee());
 			s.setMerchantid(a.getMerchantid());
 			s.setRate(a.getRate());
 			ratesdelService.save(s);
+			val++;
+			System.out.println(val+"val");
 		}
+		/*String agent = "";
+		for(Rate a : page){
+			Rate s = new Rate();
+			s.setAislecode("ld19");
+			s.setAgentid(a.getAgentid());
+			s.setMerchantid(a.getMerchantid());
+			s = ratesdelService.findByObject(s);
+			if (s == null) {
+				Rate rate = new Rate();
+				rate.setAislecode("ld19");
+				rate.setAgentid(a.getAgentid());
+				rate.setD0fee(a.getD0fee());
+				rate.setMerchantid(a.getMerchantid());
+				rate.setRate(a.getRate());
+				ratesdelService.save(rate);
+				agent = agent+a.getAgentid()+","+a.getMerchantid()+";";
+			}
+			val++;
+			System.out.println(val+"val");
+		}*/
+		System.out.println("val == "+val);
 		return page;
 	}
+
+
 }

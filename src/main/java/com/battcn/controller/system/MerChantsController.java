@@ -1,13 +1,13 @@
 package com.battcn.controller.system;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.battcn.annotation.SystemLog;
 import com.battcn.constant.InstitutionIdNumber;
 import com.battcn.controller.BaseController;
 import com.battcn.entity.*;
 import com.battcn.service.system.*;
-import com.battcn.util.HttpClientUtils;
-import com.battcn.util.UserEntityUtil;
+import com.battcn.util.*;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang.StringUtils;
@@ -15,14 +15,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.UnsupportedEncodingException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.*;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Controller
 @RequestMapping("MerChants")
@@ -254,7 +258,74 @@ public class MerChantsController extends BaseController {
 
 		return "success";
 	}
-
+	@RequestMapping("/realNameList")
+	public String realNameList(Model model){
+		model.addAttribute("res", findResByUser());
+		model.addAttribute("app", appNameService.getList());
+		return "/system/merChants/realNameList";
+	}
+	@RequestMapping("/queryRealNameList")
+	@ResponseBody
+	public PageInfo<MpInformation> queryRealNameList(MpInformation info) throws ParseException {
+		HttpServletRequest request = CommonUtil.getHttpRequest();
+		Integer pageNum = CommonUtil
+				.valueOf(request.getParameter("pageNum"), 1);
+		Integer pageSize = CommonUtil.valueOf(request.getParameter("pageSize"),
+				10);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String url = "http://47.104.4.155:1172/Information/selectLists";
+		Map<String, Object> map = new HashMap<>();
+		map.put("merChantId",info.getMerChantId());
+		map.put("merName",info.getMerName());
+		map.put("mobile",info.getMobile());
+		map.put("state",info.getState());
+		map.put("artificial",info.getArtificial());
+		long startSeconds = 0;
+		long finishSeconds = 0;
+		if(!"".equals(info.getStartTime())){
+			startSeconds = sdf.parse(info.getStartTime()).getTime();//毫秒
+		}
+		if(!"".equals(info.getFinshTime())){
+			finishSeconds = sdf.parse(info.getFinshTime()).getTime();//毫秒
+		}
+		map.put("startTime",startSeconds);
+		map.put("finshTime",finishSeconds);
+		map.put("institutionId","T00000009");
+		map.put("pageNum", pageNum.toString());
+		map.put("pageSize", pageSize.toString());
+		String result = HttpClientUtils.doPost(url, map);
+		System.out.println("result:"+result);
+		JSONObject t = JSONObject.parseObject(result);
+		List<MpInformation> list = JSON.parseArray(t.getString("list"),MpInformation.class);
+		for (int i = 0; i < list.size(); i++) {
+			Long createTime = list.get(i).getCreateTime();
+			String time = sdf.format(createTime);
+			list.get(i).setTime(time);
+		}
+		PageInfo<MpInformation> page = new PageInfo<MpInformation>();
+		page.setList(list);
+		page.setPageSize(Integer.parseInt(t.getString("pageSize")));
+		page.setPages(Integer.parseInt(t.getString("pages")));
+		page.setTotal(Integer.parseInt(t.getString("total")));
+		System.out.println("page:"+page);
+		return page;
+	}
+	@RequestMapping("/check")
+	public String check(Model model,String merChantId) {
+		model.addAttribute("merChantId",merChantId);
+		return "/system/merChants/check";
+	}
+	@RequestMapping("/checkRealName")
+	@ResponseBody
+	public String checkRealName(String merChantId,Long state)  {
+		String url = "http://47.104.4.155:1172/Information/alter";
+		Map<String, Object> map = new HashMap<>();
+		map.put("merChantId", merChantId);
+		map.put("state", state);
+		String result = HttpClientUtils.doPost(url, map);
+		System.out.println("审核结果："+result);
+		return result;
+	}
 	@RequestMapping("gam")
 	@SystemLog(module = "用户管理", methods = "查询用户的信息")
 	public String gam (Model model) {
@@ -299,6 +370,100 @@ public class MerChantsController extends BaseController {
 		PageInfo<MerChants> hList=merChantsService.queryPageForList(m);
 		return hList;
 
+	}
+
+	@RequestMapping("supplement")
+	public String supplement(Model model,String merChantId,String name){
+		model.addAttribute("merChantId",merChantId);
+		model.addAttribute("name",name);
+		System.out.println("name:"+name+";merChantId:"+merChantId);
+		return "system/merChants/supplement";
+	}
+	@RequestMapping(value = "/addFaceImgUrl",method = RequestMethod.POST)
+	@ResponseBody
+	public String addFaceImgUrl(String merChantId,
+								@RequestParam(value = "userIDCardA") MultipartFile userIDCardA,
+								@RequestParam(value = "userIDCardB") MultipartFile userIDCardB,
+								@RequestParam(value = "cardImgA") MultipartFile cardImgA,
+								@RequestParam(value = "faceImg") MultipartFile faceImg, HttpServletRequest request){
+		if (StringUtils.isEmpty(merChantId)) {
+			return "merChantId";
+		}
+		if (!userIDCardA.isEmpty() || !userIDCardB.isEmpty() || !cardImgA.isEmpty() || !faceImg.isEmpty()) {
+
+			if (!userIDCardA.isEmpty()) {
+				String result = upFile("FRONT_ID_CARD_PHOTO",merChantId,userIDCardA,request);
+				if (result.equals("error")) {
+					return "f";
+				}
+			}
+			if (!userIDCardB.isEmpty()) {
+				String result = upFile("BACK_ID_CARD_PHOTO",merChantId,userIDCardB,request);
+				if (result.equals("error")) {
+					return "f";
+				}
+			}
+			if (!cardImgA.isEmpty()) {
+				String result = upFile("BANK_CARD_IMG",merChantId,cardImgA,request);
+				if (result.equals("error")) {
+					return "f";
+				}
+			}
+			if (!faceImg.isEmpty()) {
+				String result = upFile("HAND_ID_CARD_PHOTO",merChantId,faceImg,request);
+				if (result.equals("error")) {
+					return "f";
+				}
+			}
+		} else {
+			return "fail";
+		}
+		return "success";
+	}
+	public String upFile(String name, String merChantId, MultipartFile file, HttpServletRequest request){
+		try {
+			// 文件保存路径
+			String filePath = request.getSession().getServletContext()
+					.getRealPath("/")
+					+ file.getOriginalFilename();
+			// 转存文件
+			file.transferTo(new File(filePath));
+
+			String s = MD5Util.getMD5String(filePath);
+			String ossKey = "indexPush/" + s;
+			OSSClientUtil clientUtil = new OSSClientUtil();
+			Date expiration = new Date(new Date().getTime() + 3600L * 1000 * 24
+					* 365 * 10);
+			try {
+				InputStream instream = new FileInputStream(filePath);
+				clientUtil.uploadFile2OSS(instream, ossKey);
+				// 获取url
+				URL url = clientUtil.createUrl(ossKey, expiration);
+				clientUtil.destory();
+				String fileUrl = url.toString();
+
+				Map<String,Object> map = new HashMap();
+				map.put("name",name);
+				map.put("merChantId",merChantId);
+				map.put("imgStr",fileUrl);
+				String result = HttpClientUtils.doPost("http://47.104.4.155:1172/Information/alters",map);
+				System.out.println("result"+result);
+				YJResult yjResult = JSONObject.parseObject(result).toJavaObject(YJResult.class);
+				System.out.println("yjResult"+JSON.toJSONString(yjResult));
+				System.out.println("yjResult.getRespCode()"+yjResult.getRespCode());
+				if (yjResult.getRespCode().equals("0000")) {
+					return "success";
+				} else {
+					return "error";
+				}
+			} catch (FileNotFoundException ef) {
+				ef.printStackTrace();
+				return "f";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "f";
+		}
 	}
 
 }

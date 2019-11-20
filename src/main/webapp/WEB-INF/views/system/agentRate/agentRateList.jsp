@@ -120,6 +120,9 @@
 				if(value == "kft"){
 					return "大额快捷K";
 				}
+                if(value == "ybq"){
+                    return "大额快捷M";
+                }
 			}
 		}]
 	});
