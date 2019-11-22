@@ -123,6 +123,9 @@
                 if(value == "ybq"){
                     return "大额快捷M";
                 }
+                if(value == "ybc"){
+                    return "云闪付M";
+                }
 			}
 		}]
 	});

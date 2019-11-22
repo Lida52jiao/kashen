@@ -134,6 +134,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     if(aislecode == "ybq"){
         $("#aislecodeName").val("大额快捷M");
     }
+    if(aislecode == "ybc"){
+        $("#aislecodeName").val("云闪付M");
+    }
 	$("#rate").val(parseFloat(${MerchantsRate.rate*100}).toFixed(3));
 	$("#d0fee").val(${MerchantsRate.d0fee/100});
 </script>
