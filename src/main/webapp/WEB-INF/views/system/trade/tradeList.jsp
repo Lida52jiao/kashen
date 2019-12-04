@@ -59,9 +59,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                 	<c:if test="${key.aislecode=='rf'}">
 									<option value ="${key.aislecode}">银联快捷R  </option>
 								</c:if>
-								<%--<c:if test="${key.aislecode=='yb'}">
-									<option value ="${key.aislecode}">快捷多商户  </option>
-								</c:if>--%>
 								<c:if test="${key.aislecode=='zf01'}">
 									<option value ="${key.aislecode}">银联快捷Z  </option>
 								</c:if>
@@ -80,14 +77,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<c:if test="${key.aislecode=='xjwk'}">
 									<option value ="${key.aislecode}">大额落地X  </option>
 								</c:if>
-								<%--<c:if test="${key.aislecode=='hz01'}">
-									<option value ="${key.aislecode}">银联快捷H1  </option>
-								</c:if>--%>
 								<c:if test="${key.aislecode=='cj'}">
 									<option value ="${key.aislecode}">大额快捷C  </option>
 								</c:if>
 								<c:if test="${key.aislecode=='kft'}">
 									<option value ="${key.aislecode}">大额快捷K  </option>
+								</c:if>
+								<c:if test="${key.aislecode=='ybq'}">
+									<option value ="${key.aislecode}">大额快捷M  </option>
+								</c:if>
+								<c:if test="${key.aislecode=='ybc'}">
+									<option value ="${key.aislecode}">云闪付M(大额)  </option>
+								</c:if>
+								<c:if test="${key.aislecode=='ybcs'}">
+									<option value ="${key.aislecode}">云闪付M(小额)  </option>
 								</c:if>
 							</c:forEach>
 		  			</select>
@@ -323,14 +326,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				if(value == "xjwk"){
 					return "大额落地X";
 				}
-				/*if(value == "hz01"){
-					return "银联快捷H1";
-				}*/
 				if(value == "cj"){
 					return "大额快捷C";
 				}
 				if(value == "kft"){
 					return "大额快捷K";
+				}
+				if(value == "ybq"){
+					return "大额快捷M";
+				}
+				if(value == "ybc"){
+					return "云闪付M(大额)";
+				}
+				if(value == "ybcs"){
+					return "云闪付M(小额)";
 				}
 			}
 		},{

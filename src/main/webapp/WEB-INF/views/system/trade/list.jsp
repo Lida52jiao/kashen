@@ -57,12 +57,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<select name="aisleCode" id="aisleCode" class="input form-control" >
 						<option value ="">请选择通道  </option>
 		                        <c:forEach items="${aisleCode}" var="key">
-							 		<%--<c:if test="${key.aislecode=='ld01'}">
-									<option value ="${key.aislecode}">落地通道L  </option>
-									</c:if>
-									<c:if test="${key.aislecode=='ld02'}">
-										<option value ="${key.aislecode}">落地通道Y  </option>
-									</c:if>--%>
 									<c:if test="${key.aislecode=='ld03'}">
 									<option value ="${key.aislecode}">落地通道X  </option>
 									</c:if>
@@ -93,17 +87,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<c:if test="${key.aislecode=='ld15'}">
 										<option value ="${key.aislecode}">落地大额C2 </option>
 									</c:if>
-									<%--<c:if test="${key.aislecode=='ld16'}">
+									<c:if test="${key.aislecode=='ld16'}">
 										<option value ="${key.aislecode}">小额落地C2 </option>
 									</c:if>
-									<c:if test="${key.aislecode=='ld13'}">
-										<option value ="${key.aislecode}">落地小额D </option>
-									</c:if>--%>
 									<c:if test="${key.aislecode=='ld17'}">
 										<option value ="${key.aislecode}">组合计划T </option>
 									</c:if>
-									<c:if test="${key.aislecode=='ybq'}">
-										<option value ="${key.aislecode}">大额快捷M </option>
+									<c:if test="${key.aislecode=='sq'}">
+										<option value ="${key.aislecode}">小额落地S </option>
 									</c:if>
 								</c:forEach>
 	  					</select>
@@ -657,12 +648,6 @@ function getState() {
 			align : 'center',
 			valign : 'middle',
 			formatter:function (value) {
-				/*if(value == "ld01"){
-					return '落地通道L';
-				}
-				if(value == "ld02"){
-					return '落地通道Y';
-				}*/
 				if(value == "ld03"){
 					return "落地通道X";
 				}
@@ -693,17 +678,17 @@ function getState() {
                 if(value == "ld15"){
                     return "落地大额C2";
                 }
-                /*if(value == "ld16"){
+                if(value == "ld16"){
                     return "小额落地C2";
                 }
-                if(value == "ld13"){
-                    return "落地小额D";
-                }*/
                 if(value == "ld17"){
                     return "组合计划T";
                 }
                 if(value == "ybq"){
                     return "大额快捷M";
+                }
+                if(value == "sq"){
+                    return "小额落地S";
                 }
 			}
 		}, {

@@ -52,7 +52,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									 <option value ="${key.aislecode}">大额快捷M </option>
 								 </c:if>
 								 <c:if test="${key.aislecode=='ybc'}">
-									 <option value ="${key.aislecode}">云闪付M </option>
+									 <option value ="${key.aislecode}">云闪付M(大额) </option>
+								 </c:if>
+								 <c:if test="${key.aislecode=='ybcs'}">
+									 <option value ="${key.aislecode}">云闪付M(小额) </option>
 								 </c:if>
 							</c:forEach>
 		  			</select>

@@ -96,15 +96,6 @@
 								 <c:if test="${key.aislecode=='ld14'}">
 									 <option value ="${key.aislecode}">小额落地HB </option>
 								 </c:if>
-								 <c:if test="${key.aislecode=='ld15'}">
-									 <option value ="${key.aislecode}">落地大额C2 </option>
-								 </c:if>
-								 <%--<c:if test="${key.aislecode=='ld16'}">
-									 <option value ="${key.aislecode}">小额落地C2 </option>
-								 </c:if>
-								 <c:if test="${key.aislecode=='ld13'}">
-									 <option value ="${key.aislecode}">落地小额D </option>
-								 </c:if>--%>
 								 <c:if test="${key.aislecode=='ld17'}">
 									 <option value ="${key.aislecode}">组合计划T </option>
 								 </c:if>
@@ -112,8 +103,20 @@
 									 <option value ="${key.aislecode}">大额快捷M </option>
 								 </c:if>
 								 <c:if test="${key.aislecode=='ybc'}">
-									 <option value ="${key.aislecode}">云闪付M </option>
+									 <option value ="${key.aislecode}">云闪付M(大额) </option>
 								 </c:if>
+								 <c:if test="${key.aislecode=='ybcs'}">
+									 <option value ="${key.aislecode}">云闪付M(小额) </option>
+								 </c:if>
+                                 <c:if test="${key.aislecode=='ld15'}">
+                                     <option value ="${key.aislecode}">大额落地C2 </option>
+                                 </c:if>
+                                 <c:if test="${key.aislecode=='ld16'}">
+                                     <option value ="${key.aislecode}">小额落地C2 </option>
+                                 </c:if>
+                                 <c:if test="${key.aislecode=='sq'}">
+                                     <option value ="${key.aislecode}">小额落地S </option>
+                                 </c:if>
 							</c:forEach>
 	  				</select>
 					 <span class="input-group-btn"></span>
@@ -314,15 +317,6 @@
                 if(value == "ld14"){
                     return "小额落地HB";
                 }
-                if(value == "ld15"){
-                    return "落地大额C2";
-                }
-                /*if(value == "ld16"){
-                    return "小额落地C2";
-                }
-                if(value == "ld13"){
-                    return "落地小额D";
-                }*/
                 if(value == "ld17"){
                     return "组合计划T";
                 }
@@ -330,7 +324,19 @@
                     return "大额快捷M";
                 }
                 if(value == "ybc"){
-                    return "云闪付M";
+                    return "云闪付M(大额)";
+                }
+                if(value == "ybcs"){
+                    return "云闪付M(小额)";
+                }
+                if(value == "ld15"){
+                    return "大额落地C2";
+                }
+                if(value == "ld16"){
+                    return "小额落地C2";
+                }
+                if(value == "sq"){
+                    return "小额落地S";
                 }
 			}
 		}, {

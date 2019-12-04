@@ -49,7 +49,7 @@
 								<option value ="${key.aislecode}">小额落地HB </option>
 							</c:if>
 							<c:if test="${key.aislecode=='ld15'}">
-								<option value ="${key.aislecode}">落地大额C2 </option>
+								<option value ="${key.aislecode}">大额落地C2 </option>
 							</c:if>
 							<c:if test="${key.aislecode=='ld16'}">
 								<option value ="${key.aislecode}">小额落地C2 </option>
@@ -62,6 +62,9 @@
 							</c:if>
 							<c:if test="${key.aislecode=='ybq'}">
 								<option value ="${key.aislecode}">大额快捷M </option>
+							</c:if>
+							<c:if test="${key.aislecode=='sq'}">
+								<option value ="${key.aislecode}">小额落地S </option>
 							</c:if>
 						</c:forEach>
 					</select>
