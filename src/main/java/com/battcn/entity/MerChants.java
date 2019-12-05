@@ -65,6 +65,8 @@ public class MerChants implements Serializable {
 	private String startDate;
 	@Column(name = "finishDate")
 	private String finishDate;
+	@Column(name = "isNotUse")
+	private String isNotUse;
 	@Column(name = "appId")
 	private String appId;
 	@Column(name = "appName")
@@ -83,7 +85,16 @@ public class MerChants implements Serializable {
 	private BigDecimal balanceFrozen;
 	@Column(name = "balanceProfitFrozen")
 	private BigDecimal balanceProfitFrozen;
-	
+
+
+	public String getIsNotUse() {
+		return isNotUse;
+	}
+
+	public void setIsNotUse(String isNotUse) {
+		this.isNotUse = isNotUse;
+	}
+
 	public MerChants() {
 		super();
 	}

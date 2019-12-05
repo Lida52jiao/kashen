@@ -167,7 +167,7 @@ public class MerChantsController extends BaseController {
 	
 	@RequestMapping("alter")
 	@ResponseBody
-	public String alter(String merChantId,String merName,String merMp,String agentStatus,String merType,String merChantFee,String generationFee,String generationFeeRepayment, int time) {
+	public String alter(String merChantId,String merName,String merMp,String isNotUse,String agentStatus,String merType,String merChantFee,String generationFee,String generationFeeRepayment, int time) {
 		Transaction t=new Transaction();
 		t.setMerChantId(merChantId);
 		Transaction transaction=transactionService.findByObject(t);
@@ -183,6 +183,7 @@ public class MerChantsController extends BaseController {
 				h.setAgentStatus(agentStatus);
 				h.setMerType(merType);
 				h.setMerChantFee(merChantFee);
+				h.setIsNotUse(isNotUse);
 				h.setGenerationFee(generationFee);
 				h.setGenerationFeeRepayment(generationFeeRepayment);
 				h.setFinishDate(finishDate+finishDates+"");

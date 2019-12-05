@@ -43,6 +43,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<span class="help-block m-b-none">
 				</div>
 			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">功能是否打开：</label>
+
+				<label><input type="radio" value="1" ${merChants.isNotUse == 1 ? 'checked="checked" ' : null} name="isNotUse"> <i></i> 是(可用)</label>
+				<label><input type="radio" value="2" ${merChants.isNotUse == 2 ? 'checked="checked" ' : null} name="isNotUse"> <i></i> 否(不可用)</label>
+
+				<span class="help-block m-b-none"></span>
+			</div>
 			<div style ="display:none">
 				<div class="form-group">
 					<label class="col-sm-3 control-label">费率：</label>
