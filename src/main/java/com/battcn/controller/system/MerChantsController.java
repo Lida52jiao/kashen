@@ -337,6 +337,8 @@ public class MerChantsController extends BaseController {
 
 	@RequestMapping("getAgentMer")
 	@ResponseBody
+
+
 	public PageInfo<MerChants> getAgent(String merChantId,
 										String merName,
 										String merMp,
