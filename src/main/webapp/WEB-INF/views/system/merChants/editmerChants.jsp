@@ -45,7 +45,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">功能是否打开：</label>
-
 				<label><input type="radio" value="1" ${merChants.isNotUse == 1 ? 'checked="checked" ' : null} name="isNotUse"> <i></i> 是(可用)</label>
 				<label><input type="radio" value="2" ${merChants.isNotUse == 2 ? 'checked="checked" ' : null} name="isNotUse"> <i></i> 否(不可用)</label>
 
@@ -84,7 +83,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</form>
 	</div>
 </div>
-
 
 <script>
    $(document).ready(function(){$(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",})});
