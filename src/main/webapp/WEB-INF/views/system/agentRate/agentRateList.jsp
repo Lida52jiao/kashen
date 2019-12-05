@@ -124,7 +124,10 @@
                     return "大额快捷M";
                 }
                 if(value == "ybc"){
-                    return "云闪付M";
+                    return "云闪付M(大额)";
+                }
+                if(value == "ybcs"){
+                    return "云闪付M(小额)";
                 }
 			}
 		}]

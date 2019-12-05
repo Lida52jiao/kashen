@@ -60,10 +60,13 @@
                         <option value ="alipay">升级缴费</option>
                         <option value ="ld12">落地大额C</option>
                         <option value ="ld14">小额落地HB</option>
-                        <option value ="ld15">落地大额C2</option>
-                        <option value ="ld16">小额落地C2</option>
-                        <option value ="ld13">落地小额D</option>
                         <option value ="ld17">组合计划T</option>
+                        <option value ="ybq">大额快捷M</option>
+                        <option value ="ybc">云闪付M(大额)</option>
+                        <option value ="ybcs">云闪付M(小额)</option>
+                        <option value ="ld15">大额落地C2</option>
+                        <option value ="ld16">小额落地C2</option>
+                        <option value ="sq">小额落地S</option>
                     </select>
                 </div></div>
 
@@ -229,20 +232,26 @@
                 if(value == "ld14"){
                     return "小额落地HB";
                 }
-                if(value == "ld15"){
-                    return "落地大额C2";
-                }
-                if(value == "ld16"){
-                    return "小额落地C2";
-                }
-                if(value == "ld13"){
-                    return "落地小额D";
-                }
                 if(value == "ld17"){
                     return "组合计划T";
                 }
                 if(value == "ybq"){
                     return "大额快捷M";
+                }
+                if(value == "ybc"){
+                    return "云闪付M(大额)";
+                }
+                if(value == "ybcs"){
+                    return "云闪付M(小额)";
+                }
+                if(value == "ld15"){
+                    return "大额落地C2";
+                }
+                if(value == "ld16"){
+                    return "小额落地C2";
+                }
+                if(value == "sq"){
+                    return "小额落地S";
                 }
             }
         },{

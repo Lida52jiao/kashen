@@ -121,7 +121,7 @@
                     return "小额落地HB";
                 }
                 if(value == "ld15"){
-                    return "落地大额C2";
+                    return "大额落地C2";
                 }
                 if(value == "ld16"){
                     return "小额落地C2";
@@ -134,6 +134,9 @@
                 }
                 if(value == "ybq"){
                     return "大额快捷M";
+                }
+                if(value == "sq"){
+                    return "小额落地S";
                 }
 			}
 		}]

@@ -125,9 +125,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	if(aislecode == "ld14"){
 		$("#aislecodeName").val("小额落地HB");
 	}
-	if(aislecode == "ld15"){
-		$("#aislecodeName").val("落地大额C2");
-	}
 	if(aislecode == "ld17"){
 		$("#aislecodeName").val("组合计划T");
 	}
@@ -135,7 +132,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         $("#aislecodeName").val("大额快捷M");
     }
     if(aislecode == "ybc"){
-        $("#aislecodeName").val("云闪付M");
+        $("#aislecodeName").val("云闪付M(大额)");
+    }
+    if(aislecode == "ybcs"){
+        $("#aislecodeName").val("云闪付M(小额)");
     }
 	$("#rate").val(parseFloat(${MerchantsRate.rate*100}).toFixed(3));
 	$("#d0fee").val(${MerchantsRate.d0fee/100});
