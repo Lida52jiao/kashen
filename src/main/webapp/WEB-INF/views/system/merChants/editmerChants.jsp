@@ -84,12 +84,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</form>
 	</div>
 </div>
+
+
 <script>
    $(document).ready(function(){$(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",})});
 </script>
-
 <script type="text/javascript">
-
  $(function(){
   	save = function(obj) {
   		if($("#merChantsForm").valid()){
