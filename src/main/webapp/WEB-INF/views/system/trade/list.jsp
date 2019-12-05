@@ -85,7 +85,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<option value ="${key.aislecode}">小额落地HB </option>
 									</c:if>
 									<c:if test="${key.aislecode=='ld15'}">
-										<option value ="${key.aislecode}">落地大额C2 </option>
+										<option value ="${key.aislecode}">大额落地C2 </option>
 									</c:if>
 									<c:if test="${key.aislecode=='ld16'}">
 										<option value ="${key.aislecode}">小额落地C2 </option>
@@ -676,7 +676,7 @@ function getState() {
                     return "小额落地HB";
                 }
                 if(value == "ld15"){
-                    return "落地大额C2";
+                    return "大额落地C2";
                 }
                 if(value == "ld16"){
                     return "小额落地C2";
